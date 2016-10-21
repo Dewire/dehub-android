@@ -10,10 +10,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.dewire.dehub.view.login.LoginActivity">
 
+    <EditText
+        android:id="@+id/username_text_view"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/username"
+        android:layout_marginTop="100dp"/>
+
+    <EditText
+        android:id="@+id/password_text_view"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/username_text_view"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"/>
+
     <Button
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="go"
-        android:onClick="startMainActivity" />
+        android:text="@string/login"
+        android:layout_below="@id/password_text_view"
+        android:layout_marginTop="60dp"
+        android:enabled="false"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

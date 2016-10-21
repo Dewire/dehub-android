@@ -11,14 +11,14 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".view.login.LoginActivity">
+    <activity android:name=".view.login.LoginActivity" android:launchMode="singleTask">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".view.login.AppActivity">
+    <activity android:name=".view.AppActivity" android:launchMode="singleTask">
     </activity>
   </application>
 

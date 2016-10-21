@@ -15,10 +15,12 @@ import rx.subjects.BehaviorSubject;
  */
 
 public class State {
-
-  public final BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
-
   private String basicAuth = "";
+  private List<BehaviorSubject> subjects;
+
+  public State() {
+   subjects = getSubjects();
+  }
 
   String getBasicAuth() {
     return basicAuth;
@@ -30,13 +32,7 @@ public class State {
 
   // Invalidation
 
-  private List<BehaviorSubject> subjects;
-
   public void invalidate() {
-    if (subjects == null) {
-      subjects = getSubjects();
-    }
-
     for (BehaviorSubject subject : subjects) {
       Object state = subject.getValue();
       if (state != null) {
@@ -59,4 +55,9 @@ public class State {
     }
     return result;
   }
+
+  // State
+
+  public final BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
 }
+

@@ -35,6 +35,7 @@ dependencies {
     compile 'com.google.guava:guava:19.0'
     compile 'io.reactivex:rxjava:1.2.1'
     compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'com.squareup.moshi:moshi:1.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
@@ -43,6 +44,9 @@ dependencies {
     compile 'info.android15.nucleus:nucleus:4.0.0'
     compile 'info.android15.nucleus:nucleus:4.0.0'
     compile 'info.android15.nucleus:nucleus-support-v7:4.0.0'
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
 
     annotationProcessor 'com.google.dagger:dagger-compiler:2.7'
     compile 'com.google.dagger:dagger:2.7'
@@ -53,4 +57,8 @@ dependencies {
     provided 'com.ryanharter.auto.value:auto-value-moshi:0.4.0'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-moshi:0.4.0'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.4-rc2'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }

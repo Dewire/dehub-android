@@ -1,7 +1,8 @@
-package com.dewire.dehub.view.login;
+package com.dewire.dehub.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.dewire.dehub.R;
 
@@ -12,4 +13,8 @@ public class AppActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_app);
   }
+
+
+
+
 }

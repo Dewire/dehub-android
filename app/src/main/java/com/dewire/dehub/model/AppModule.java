@@ -2,6 +2,9 @@ package com.dewire.dehub.model;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -37,5 +40,11 @@ public class AppModule {
   @Singleton
   GistApi gistApi(State state, Retrofit retrofit) {
     return new GistApi(state, retrofit);
+  }
+
+  @Provides
+  @Singleton
+  RefWatcher refWatcher() {
+    return LeakCanary.install(application);
   }
 }

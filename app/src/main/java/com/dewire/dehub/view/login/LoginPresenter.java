@@ -1,46 +1,50 @@
 package com.dewire.dehub.view.login;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
-import com.dewire.dehub.model.GistApi;
-import com.dewire.dehub.model.State;
+import com.dewire.dehub.util.NetObserver;
+import com.dewire.dehub.util.Tuple;
 import com.dewire.dehub.view.BasePresenter;
-import com.dewire.dehub.view.login.LoginActivity;
+import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
-import javax.inject.Inject;
-
-import nucleus.presenter.Presenter;
+import rx.Observable;
 
 public class LoginPresenter extends BasePresenter<LoginActivity> {
 
   @Override
-  protected void onCreate(@Nullable Bundle savedState) {
-    /*
-    state.gists.subscribe(gists -> {
-      System.out.println("got gists: " + gists.size());
-      System.out.println("view is null: " + (getView() == null));
-    });
-    */
+  protected void onTakeView(LoginActivity view) {
+    super.onTakeView(view);
 
-    api.login("kl", "fotbollen9871").subscribe(v -> {
-      Log.d("LOGIN", "ok");
-      getView().startMainActivity(null);
-    }, error -> {
-      Log.e("LOGIN", "failed");
-    });
+    Observable<Tuple<String>> userPass = Observable.combineLatest(
+        RxTextView.textChanges(view.usernameTextView).map(CharSequence::toString),
+        RxTextView.textChanges(view.passwordTextView).map(CharSequence::toString),
+        Tuple::create);
+
+    life(userPass
+        .map(up -> !up.first().isEmpty() && !up.second().isEmpty())
+        .distinctUntilChanged()
+        .subscribe(view::enableLoginButton));
+
+    life(RxView.clicks(view.loginButton)
+        .withLatestFrom(userPass, (click, up) -> up)
+        .subscribe(up -> tryLogin(up.first(), up.second())));
   }
 
-  @Override
-  protected void onTakeView(LoginActivity loginActivity) {
-    super.onTakeView(loginActivity);
+  private void tryLogin(String usernameText, String passwordText) {
+    view().enableLoginButton(false);
+
+    spin(api.login(usernameText, passwordText)).subscribe(NetObserver.create(this, v -> {
+      Log.d("LOGIN", "ok");
+      view().starAppActivity();
+    }, error -> {
+      Log.e("LOGIN", "failed");
+      view().enableLoginButton(true);
+    }));
   }
 
   protected void onInject(AppComponent component) {
     component.inject(this);
   }
-
-
 }
