@@ -1,4 +1,4 @@
-package com.dewire.dehub.view;
+package com.dewire.dehub.view.util;
 
 /**
  * Created by kl on 19/10/16.

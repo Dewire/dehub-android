@@ -16,10 +16,6 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class DehubApplication extends Application {
 
-  public static boolean isMainThread() {
-    return Thread.currentThread() == Looper.getMainLooper().getThread();
-  }
-
   public static AppComponent getAppComponent(Context context) {
     return ((DehubApplication) context.getApplicationContext()).getAppComponent();
   }

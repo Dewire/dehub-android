@@ -2,25 +2,18 @@ package com.dewire.dehub.view.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.dewire.dehub.R;
-import com.dewire.dehub.util.CompletionObserver;
 import com.dewire.dehub.view.AppActivity;
 import com.dewire.dehub.view.BaseAppCompatActivity;
-import com.dewire.dehub.view.LoadingIndicator;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
-import rx.Observable;
 
 @RequiresPresenter(LoginPresenter.class)
-public class LoginActivity extends BaseAppCompatActivity<LoginPresenter> implements LoadingIndicator {
+public class LoginActivity extends BaseAppCompatActivity<LoginPresenter> {
 
   /////////////////////////// OUTPUTS ////////////////////////////////
 
@@ -38,34 +31,22 @@ public class LoginActivity extends BaseAppCompatActivity<LoginPresenter> impleme
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    ButterKnife.bind(this);
+    setContentView(R.layout.activity_login);
   }
 
   public void starAppActivity() {
     Intent intent = new Intent(this, AppActivity.class);
-    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
-  }
-
-  @Override
-  public void showLoadingIndicator() {
-    Log.d("DEBUG", "SPINNING");
-  }
-
-  @Override
-  public void hideLoadingIndicator() {
-    Log.d("DEBUG", "STOP SPINNING");
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-
-    boolean d = isChangingConfigurations();
-
-    Log.d("D", "CHANGE: " + d);
-
   }
 
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+  }
 }

@@ -3,15 +3,20 @@ package com.dewire.dehub.view.login;
 import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
+import com.dewire.dehub.model.GistApi;
 import com.dewire.dehub.util.NetObserver;
 import com.dewire.dehub.util.Tuple;
 import com.dewire.dehub.view.BasePresenter;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 
 public class LoginPresenter extends BasePresenter<LoginActivity> {
+
+  @Inject GistApi api;
 
   @Override
   protected void onTakeView(LoginActivity view) {

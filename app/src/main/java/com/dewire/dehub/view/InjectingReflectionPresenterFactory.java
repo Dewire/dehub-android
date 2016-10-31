@@ -12,20 +12,24 @@ import nucleus.presenter.Presenter;
  * Created by kl on 14/10/16.
  */
 
-public class InjectingReflectionPresenterFactory<P extends Presenter> extends ReflectionPresenterFactory<P> {
+class InjectingReflectionPresenterFactory<P extends Presenter>
+    extends ReflectionPresenterFactory<P> {
 
   private Context appContext;
 
-  public InjectingReflectionPresenterFactory(Class<P> presenterClass, Context contex) {
+  private InjectingReflectionPresenterFactory(Class<P> presenterClass, Context context) {
     super(presenterClass);
-    appContext = contex.getApplicationContext();
+    appContext = context.getApplicationContext();
   }
 
-  public static <P extends Presenter> InjectingReflectionPresenterFactory<P> fromViewClass(Class<?> viewClass, Context context) {
+  static <P extends Presenter> InjectingReflectionPresenterFactory<P> fromViewClass(
+      Class<?> viewClass, Context context) {
+
     RequiresPresenter annotation = viewClass.getAnnotation(RequiresPresenter.class);
     //noinspection unchecked
     Class<P> presenterClass = annotation == null ? null : (Class<P>)annotation.value();
-    return presenterClass == null ? null : new InjectingReflectionPresenterFactory<>(presenterClass, context);
+    return presenterClass == null ? null :
+        new InjectingReflectionPresenterFactory<>(presenterClass, context);
   }
 
   @Override

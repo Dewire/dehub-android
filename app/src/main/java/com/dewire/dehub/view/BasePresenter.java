@@ -1,11 +1,12 @@
 package com.dewire.dehub.view;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
-import com.dewire.dehub.model.GistApi;
-import com.dewire.dehub.model.State;
 import com.dewire.dehub.util.CompletionObserver;
+import com.dewire.dehub.view.util.LoadingIndicator;
 import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
@@ -21,15 +22,19 @@ public abstract class BasePresenter<View> extends Presenter<View> {
 
   private static final String TAG = "BasePresenter";
 
-  @Inject protected State state;
-  @Inject protected GistApi api;
   @Inject protected RefWatcher refWatcher;
   public RefWatcher getRefWatcher() { return refWatcher; }
 
   private final CompositeSubscription disposeBag = new CompositeSubscription();
   private int activeSpinnerRequests = 0;
 
-  protected abstract void onInject(AppComponent appComponent);
+  /**
+   * The presenter must inject itself in the component provided by this method.
+   * If the presenter fails to inject itself the app will crash.
+   * This method is called when the fragment instance is created and before the start of
+   * it's lifecycle.
+   */
+  protected abstract void onInject(AppComponent component);
 
   /**
    * Unsubscribes from the subscription in onDropView().
@@ -39,23 +44,33 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   }
 
   @Override
+  protected void onCreate(@Nullable Bundle savedState) {
+    checkNotNull(refWatcher, "did you forget to properly inject the presenter in onInject()?");
+    super.onCreate(savedState);
+  }
+
+  @Override
   protected void onTakeView(View view) {
     super.onTakeView(view);
-    Log.d("Presenter", "onTakeView()");
+    Log.d(TAG, debug("onTakeView()"));
   }
 
   @Override
   protected void onDropView() {
     super.onDropView();
-    Log.d("Presenter", "onDropView()");
+    Log.d(TAG, debug("onDropView()"));
     disposeBag.clear();
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    Log.d("Presenter", "onDestroy()");
+    Log.d(TAG, debug("onDestroy()"));
     refWatcher.watch(this);
+  }
+
+  private String debug(String message) {
+    return message + " - " + getClass().getSimpleName();
   }
 
   /**

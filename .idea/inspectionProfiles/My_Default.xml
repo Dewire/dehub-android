@@ -18,5 +18,6 @@
         <constraint name="__context__" target="true" within="" contains="" />
       </searchConfiguration>
     </inspection_tool>
+    <inspection_tool class="StaticPseudoFunctionalStyleMethod" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>
