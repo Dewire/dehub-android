@@ -8,12 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.model.entity.GistEntity;
+import com.dewire.dehub.model.entity.GistFileEntity;
 import com.dewire.dehub.view.BaseSupportFragment;
 import com.dewire.dehub.view.util.ListRecyclerAdapter;
 
@@ -37,6 +41,26 @@ public class MainView extends BaseSupportFragment<MainPresenter> {
   private final Adapter adapter = new Adapter();
 
   @BindView(R.id.gists_recycler_view) RecyclerView gistsView;
+
+  @Override
+  public void onCreate(Bundle bundle) {
+    super.onCreate(bundle);
+    setHasOptionsMenu(true);
+  }
+
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.fragment_main_menu, menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.new_gist) {
+      getPresenter().onActionNewGist();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater,
@@ -81,7 +105,7 @@ public class MainView extends BaseSupportFragment<MainPresenter> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
       GistEntity entity = data.get(position);
-      holder.name.setText(entity.description());
+      holder.name.setText(entity.file().getKey());
     }
   }
 

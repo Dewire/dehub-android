@@ -52,7 +52,7 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   @Override
   protected void onTakeView(View view) {
     super.onTakeView(view);
-    Log.d(TAG, debug("onTakeView()"));
+    Log.d(TAG, debug("onTakeView()") + " : id " + view.hashCode());
   }
 
   @Override
@@ -65,12 +65,12 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    Log.d(TAG, debug("onDestroy()"));
+    Log.d(TAG, debug("onDestroy() "));
     refWatcher.watch(this);
   }
 
   private String debug(String message) {
-    return message + " - " + getClass().getSimpleName();
+    return message + " : " + getClass().getSimpleName();
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.dewire.dehub.view;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -37,10 +38,16 @@ public class BaseSupportFragment<P extends BasePresenter>
   }
 
   @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+  }
+
+  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     checkNotNull(view, "subclass must return a non null value from onCreateView()");
     ButterKnife.bind(this, view);
+    setActivityBackground(view);
 
     loadingIndicator = Views.loadingIndicator(getContext());
     ((FrameLayout)view.getParent()).addView(loadingIndicator);
@@ -48,6 +55,11 @@ public class BaseSupportFragment<P extends BasePresenter>
     if (savedInstanceState != null && savedInstanceState.getBoolean(IS_SPINNING, false)) {
       showLoadingIndicator();
     }
+  }
+
+  private void setActivityBackground(View view) {
+    int color = ((ColorDrawable)view.getBackground()).getColor();
+    getActivity().findViewById(android.R.id.content).setBackgroundColor(color);
   }
 
   @Override

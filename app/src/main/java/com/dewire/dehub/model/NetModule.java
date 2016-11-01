@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.dewire.dehub.BuildConfig;
 import com.dewire.dehub.model.AdapterFactory;
 import com.dewire.dehub.model.State;
 import com.squareup.moshi.Moshi;
@@ -29,15 +30,12 @@ public class NetModule {
 
   private String baseUrl;
 
-  // Constructor needs one parameter to instantiate.
   public NetModule(String baseUrl) {
     this.baseUrl = baseUrl;
   }
 
-  // Dagger will only look for methods annotated with @Provides
   @Provides
   @Singleton
-  // Application reference must come from AppModule.class
   SharedPreferences providesSharedPreferences(Application application) {
     return PreferenceManager.getDefaultSharedPreferences(application);
   }
@@ -54,7 +52,9 @@ public class NetModule {
   @Singleton
   HttpLoggingInterceptor loggingInterceptor() {
     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-    interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+    interceptor.setLevel(BuildConfig.DEBUG ?
+        HttpLoggingInterceptor.Level.BODY :
+        HttpLoggingInterceptor.Level.NONE);
     return interceptor;
   }
 

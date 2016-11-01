@@ -8,6 +8,7 @@ import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.model.GistApi;
 import com.dewire.dehub.model.State;
 import com.dewire.dehub.view.BasePresenter;
+import com.dewire.dehub.view.Navigation;
 
 import javax.inject.Inject;
 
@@ -19,6 +20,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
   @Inject State state;
   @Inject GistApi api;
+  @Inject Navigation navigation;
 
   @Override
   protected void onInject(AppComponent component) {
@@ -41,5 +43,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     life(state.gists().subscribe(view::displayGists));
   }
 
-
+  public void onActionNewGist() {
+    navigation.navigateNewGist();
+  }
 }

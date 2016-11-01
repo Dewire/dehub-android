@@ -2,6 +2,8 @@ package com.dewire.dehub.model;
 
 import android.app.Application;
 
+import com.dewire.dehub.view.Navigation;
+import com.dewire.dehub.view.Navigator;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -46,5 +48,11 @@ public class AppModule {
   @Singleton
   RefWatcher refWatcher() {
     return LeakCanary.install(application);
+  }
+
+  @Provides
+  @Singleton
+  Navigation navigation() {
+    return new Navigator();
   }
 }
