@@ -7,6 +7,7 @@ import android.util.Log;
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.model.GistApi;
 import com.dewire.dehub.model.State;
+import com.dewire.dehub.model.entity.GistEntity;
 import com.dewire.dehub.view.BasePresenter;
 import com.dewire.dehub.view.Navigation;
 
@@ -45,5 +46,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
   public void onActionNewGist() {
     navigation.navigateNewGist();
+  }
+
+  public void onActionViewGist(GistEntity data) {
+    //navigation.navigateNewGist();
   }
 }

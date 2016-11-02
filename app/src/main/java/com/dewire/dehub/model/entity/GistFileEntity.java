@@ -16,7 +16,7 @@ public abstract class GistFileEntity {
   public abstract String raw_url();
   public abstract String type();
   public abstract boolean truncated();
-  @Nullable abstract String language();
+  @Nullable public abstract String language();
 
   public static JsonAdapter<GistFileEntity> jsonAdapter(Moshi moshi) {
     return new AutoValue_GistFileEntity.MoshiJsonAdapter(moshi);

@@ -38,11 +38,6 @@ public class BaseSupportFragment<P extends BasePresenter>
   }
 
   @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-  }
-
-  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     checkNotNull(view, "subclass must return a non null value from onCreateView()");

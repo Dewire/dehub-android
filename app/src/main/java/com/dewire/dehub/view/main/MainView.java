@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,7 +39,15 @@ import rx.functions.Func2;
 @RequiresPresenter(MainPresenter.class)
 public class MainView extends BaseSupportFragment<MainPresenter> {
 
-  private final Adapter adapter = new Adapter();
+  private final Adapter adapter = createAdapter();
+
+  private Adapter createAdapter() {
+    Adapter a = new Adapter();
+    a.setOnItemClickListener((position, data) -> {
+      getPresenter().onActionViewGist(data);
+    });
+    return a;
+  }
 
   @BindView(R.id.gists_recycler_view) RecyclerView gistsView;
 
@@ -75,6 +84,8 @@ public class MainView extends BaseSupportFragment<MainPresenter> {
     super.onViewCreated(view, savedInstanceState);
 
     gistsView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+    gistsView.addItemDecoration(new DividerItemDecoration(gistsView.getContext(),
+        LinearLayoutManager.VERTICAL));
     gistsView.setAdapter(adapter);
   }
 
@@ -85,10 +96,12 @@ public class MainView extends BaseSupportFragment<MainPresenter> {
   private static class ViewHolder extends RecyclerView.ViewHolder {
 
     TextView name;
+    TextView language;
 
     public ViewHolder(View itemView) {
       super(itemView);
       name = ButterKnife.findById(itemView, R.id.name);
+      language = ButterKnife.findById(itemView, R.id.language);
     }
   }
 
@@ -103,9 +116,14 @@ public class MainView extends BaseSupportFragment<MainPresenter> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-      GistEntity entity = data.get(position);
+    public void onBindViewHolder(ViewHolder holder, GistEntity entity) {
       holder.name.setText(entity.file().getKey());
+      holder.language.setText(entity.file().getValue().language());
+    }
+
+    @Override
+    public boolean isClickable() {
+      return true;
     }
   }
 
