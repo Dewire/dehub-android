@@ -1,5 +1,6 @@
 package com.dewire.dehub.model.entity;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -11,7 +12,7 @@ import com.squareup.moshi.Moshi;
  */
 
 @AutoValue
-public abstract class GistFileEntity {
+public abstract class GistFileEntity implements Parcelable {
   public abstract int size();
   public abstract String raw_url();
   public abstract String type();

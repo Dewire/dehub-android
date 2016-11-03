@@ -9,6 +9,7 @@ import com.dewire.dehub.view.create_gist.CreateGistPresenter;
 import com.dewire.dehub.view.login.LoginPresenter;
 import com.dewire.dehub.view.login.LoginActivity;
 import com.dewire.dehub.view.main.MainPresenter;
+import com.dewire.dehub.view.view_gist.ViewGistPresenter;
 
 import javax.inject.Singleton;
 
@@ -28,4 +29,5 @@ public interface AppComponent {
   void inject(AppPresenter appPresenter);
   void inject(MainPresenter mainPresenter);
   void inject(CreateGistPresenter createGistPresenter);
+  void inject(ViewGistPresenter viewGistPresenter);
 }

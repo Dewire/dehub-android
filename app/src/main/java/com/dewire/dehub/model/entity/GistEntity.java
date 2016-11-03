@@ -1,5 +1,7 @@
 package com.dewire.dehub.model.entity;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -12,7 +14,7 @@ import java.util.Map;
  */
 
 @AutoValue
-public abstract class GistEntity {
+public abstract class GistEntity implements Parcelable {
   public abstract String description();
   public abstract Map<String, GistFileEntity> files();
 

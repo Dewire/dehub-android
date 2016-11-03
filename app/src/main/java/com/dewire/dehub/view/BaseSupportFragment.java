@@ -2,6 +2,7 @@ package com.dewire.dehub.view;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -53,14 +54,24 @@ public class BaseSupportFragment<P extends BasePresenter>
   }
 
   private void setActivityBackground(View view) {
-    int color = ((ColorDrawable)view.getBackground()).getColor();
-    getActivity().findViewById(android.R.id.content).setBackgroundColor(color);
+    Drawable background = view.getBackground();
+
+    if (background instanceof ColorDrawable) {
+      getActivity().findViewById(android.R.id.content)
+          .setBackgroundColor(((ColorDrawable)background).getColor());
+    }
   }
 
   @Override
   public void onSaveInstanceState(Bundle bundle) {
     super.onSaveInstanceState(bundle);
-    bundle.putBoolean(IS_SPINNING, loadingIndicator.getVisibility() == View.VISIBLE);
+
+    // Yes apparently this can happen. The documentation for onSaveInstanceState() says
+    // "this method may be called at any time before onDestroy()" so I guess it is sometimes called
+    // before onViewCreated() because I got a NPE here.
+    if (loadingIndicator != null) {
+      bundle.putBoolean(IS_SPINNING, loadingIndicator.getVisibility() == View.VISIBLE);
+    }
   }
 
   @Override

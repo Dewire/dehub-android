@@ -19,6 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.schedulers.Schedulers;
 
 /**
@@ -77,6 +78,7 @@ public class NetModule {
         .baseUrl(baseUrl)
         .client(client)
         .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build();
   }

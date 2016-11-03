@@ -8,6 +8,7 @@ import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
+import retrofit2.http.Url;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.BehaviorSubject;
@@ -49,6 +50,15 @@ public class GistApi {
     return statusSubject;
   }
 
+  /**
+   * Downloads an URL. The server response content type must be text/plain.
+   * @param url gets the URL.
+   * @return an Observable<String> of the URL's body.
+   */
+  public Observable<String> get(String url) {
+    return networkObservable(api.get(url));
+  }
+
   // A helper method to configure common options that should apply for all network
   // request observables.
   private <T> Observable<T> networkObservable(Observable<T> observable) {
@@ -60,6 +70,9 @@ public class GistApi {
 
     @GET("gists")
     Observable<List<GistEntity>> getGists();
+
+    @GET
+    public Observable<String> get(@Url String url);
   }
 }
 

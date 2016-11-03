@@ -2,6 +2,7 @@ package com.dewire.dehub.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
@@ -104,4 +105,8 @@ public abstract class BasePresenter<View> extends Presenter<View> {
 
     return published;
   }
+
+
+
+
 }
