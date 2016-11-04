@@ -3,11 +3,9 @@ package com.dewire.dehub.model;
 import com.dewire.dehub.DehubApplication;
 import com.dewire.dehub.view.AppActivity;
 import com.dewire.dehub.view.AppPresenter;
-import com.dewire.dehub.view.BaseAppCompatActivity;
-import com.dewire.dehub.view.BasePresenter;
 import com.dewire.dehub.view.create_gist.CreateGistPresenter;
 import com.dewire.dehub.view.login.LoginPresenter;
-import com.dewire.dehub.view.login.LoginActivity;
+import com.dewire.dehub.view.login.view.LoginActivity;
 import com.dewire.dehub.view.main.MainPresenter;
 import com.dewire.dehub.view.view_gist.ViewGistPresenter;
 

@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.model.entity.GistEntity;
-import com.dewire.dehub.view.create_gist.CreateGistView;
-import com.dewire.dehub.view.view_gist.ViewGistView;
+import com.dewire.dehub.view.create_gist.view.CreateGistView;
+import com.dewire.dehub.view.view_gist.view.ViewGistView;
 
 /**
  * Created by kl on 01/11/16.

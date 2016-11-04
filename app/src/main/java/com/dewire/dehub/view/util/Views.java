@@ -34,20 +34,4 @@ public final class Views {
     }
   }
 
-  /**
-   * Given a fragment returns the Parcelable for the given key from the fragments arguments.
-   * @throws NullPointerException if the fragment does not have arguments or does not have a
-   * value for the key.
-   * @throws ClassCastException if the value of for the key was of the wrong type.
-   */
-  public static <T> T getParcelableViewArgument(Fragment view, String key) {
-    Bundle args = checkNotNull(view.getArguments(),
-        "tried to get arguments but getArguments() was null");
-
-    Object data = checkNotNull(args.getParcelable(key),
-        "tried to get parcelable for key " + key + " but was null");
-
-    //noinspection unchecked
-    return (T)data;
-  }
 }

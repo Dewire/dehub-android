@@ -1,13 +1,10 @@
-package com.dewire.dehub.view.main;
+package com.dewire.dehub.view.main.view;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,8 +15,8 @@ import android.widget.TextView;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.model.entity.GistEntity;
-import com.dewire.dehub.model.entity.GistFileEntity;
 import com.dewire.dehub.view.BaseSupportFragment;
+import com.dewire.dehub.view.main.MainPresenter;
 import com.dewire.dehub.view.util.ListRecyclerAdapter;
 
 import java.util.List;
@@ -27,17 +24,27 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
-import nucleus.view.NucleusSupportFragment;
-import rx.functions.Action2;
-import rx.functions.Action3;
-import rx.functions.Func2;
 
 /**
  * Created by kl on 28/10/16.
  */
 
 @RequiresPresenter(MainPresenter.class)
-public class MainView extends BaseSupportFragment<MainPresenter> {
+public class MainView extends BaseSupportFragment<MainPresenter>
+  implements MainContract.View {
+
+  //===----------------------------------------------------------------------===//
+  // View contract
+  //===----------------------------------------------------------------------===//
+
+  @Override
+  public void displayGists(List<GistEntity> gists) {
+    adapter.setData(gists);
+  }
+
+  //===----------------------------------------------------------------------===//
+  // Implementation
+  //===----------------------------------------------------------------------===//
 
   private final Adapter adapter = createAdapter();
 
@@ -89,9 +96,6 @@ public class MainView extends BaseSupportFragment<MainPresenter> {
     gistsView.setAdapter(adapter);
   }
 
-  void displayGists(List<GistEntity> gists) {
-    adapter.setData(gists);
-  }
 
   private static class ViewHolder extends RecyclerView.ViewHolder {
 

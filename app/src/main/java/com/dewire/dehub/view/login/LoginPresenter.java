@@ -7,24 +7,23 @@ import com.dewire.dehub.model.GistApi;
 import com.dewire.dehub.util.NetObserver;
 import com.dewire.dehub.util.Tuple;
 import com.dewire.dehub.view.BasePresenter;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.dewire.dehub.view.login.view.LoginContract;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 
-public class LoginPresenter extends BasePresenter<LoginActivity> {
+public class LoginPresenter extends BasePresenter<LoginContract.View> {
 
   @Inject GistApi api;
 
   @Override
-  protected void onTakeView(LoginActivity view) {
+  protected void onTakeView(LoginContract.View view) {
     super.onTakeView(view);
 
     Observable<Tuple<String>> userPass = Observable.combineLatest(
-        RxTextView.textChanges(view.usernameTextView).map(CharSequence::toString),
-        RxTextView.textChanges(view.passwordTextView).map(CharSequence::toString),
+        view.usernameText().map(CharSequence::toString),
+        view.passwordText().map(CharSequence::toString),
         Tuple::create);
 
     life(userPass
@@ -32,7 +31,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
         .distinctUntilChanged()
         .subscribe(view::enableLoginButton));
 
-    life(RxView.clicks(view.loginButton)
+    life(view.loginButtonClick()
         .withLatestFrom(userPass, (click, up) -> up)
         .subscribe(up -> tryLogin(up.first(), up.second())));
   }

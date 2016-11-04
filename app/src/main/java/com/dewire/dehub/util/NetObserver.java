@@ -5,7 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.dewire.dehub.view.BasePresenter;
 
-import nucleus.presenter.Presenter;
+import java.lang.ref.WeakReference;
+
 import rx.Observer;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -14,9 +15,16 @@ import rx.functions.Action1;
  * Created by kl on 21/10/16.
  */
 
+/**
+ * An observable that keeps a (weak) reference to a BasePresenter. If the BasePresenter or its
+ * view is null when the callback (onNext, onError, onCompleted) this class will not call through
+ * to the its registered onNext, onError, onCompleted handlers.
+ */
 public class NetObserver<T> implements Observer<T> {
 
-  private BasePresenter<?> presenter;
+  private NetObserver() { }
+
+  private WeakReference<BasePresenter<?>> presenter;
   private Action1<T> _onNext;
   private Action1<Throwable> _onError;
   private Action0 _onCompleted;
@@ -43,7 +51,7 @@ public class NetObserver<T> implements Observer<T> {
       @Nullable Action0 onCompleted
   ) {
     NetObserver<T> observer = new NetObserver<>();
-    observer.presenter = presenter;
+    observer.presenter = new WeakReference<>(presenter);
     observer._onNext = onNext;
     observer._onError = onError;
     observer._onCompleted = onCompleted;
@@ -52,18 +60,27 @@ public class NetObserver<T> implements Observer<T> {
 
   @Override
   public void onCompleted() {
-    presenter.getRefWatcher().watch(this);
-    if (presenter.getView() != null && _onCompleted != null) _onCompleted.call();
+    BasePresenter<?> p = presenter.get();
+    if (p == null) return;
+
+    p.getRefWatcher().watch(this);
+    if (p.getView() != null && _onCompleted != null) _onCompleted.call();
   }
 
   @Override
   public void onError(Throwable throwable) {
-    presenter.getRefWatcher().watch(this);
-    if (presenter.getView() != null && _onError != null) _onError.call(throwable);
+    BasePresenter<?> p = presenter.get();
+    if (p == null) return;
+
+    p.getRefWatcher().watch(this);
+    if (p.getView() != null && _onError != null) _onError.call(throwable);
   }
 
   @Override
   public void onNext(T t) {
-    if (presenter.getView() != null) _onNext.call(t);
+    BasePresenter<?> p = presenter.get();
+    if (p == null) return;
+
+    if (p.getView() != null) _onNext.call(t);
   }
 }

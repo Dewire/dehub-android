@@ -1,4 +1,4 @@
-package com.dewire.dehub.view.view_gist;
+package com.dewire.dehub.view.view_gist.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
+import com.dewire.dehub.view.view_gist.ViewGistPresenter;
 
 import javax.inject.Inject;
 
@@ -20,7 +21,21 @@ import nucleus.factory.RequiresPresenter;
  */
 
 @RequiresPresenter(ViewGistPresenter.class)
-public class ViewGistView extends BaseSupportFragment<ViewGistPresenter> {
+public class ViewGistView extends BaseSupportFragment<ViewGistPresenter>
+  implements ViewGistContract.View {
+
+  //===----------------------------------------------------------------------===//
+  // View contract
+  //===----------------------------------------------------------------------===//
+
+  @Override
+  public void setGistText(CharSequence text) {
+    gistText.setText(text);
+  }
+
+  //===----------------------------------------------------------------------===//
+  // Implementation
+  //===----------------------------------------------------------------------===//
 
   public static final String GIST_ENTITY_KEY = "GIST_ENTITY_KEY";
 
@@ -33,9 +48,5 @@ public class ViewGistView extends BaseSupportFragment<ViewGistPresenter> {
                            @Nullable Bundle savedInstanceState) {
 
     return inflater.inflate(R.layout.fragment_view_gist, container, false);
-  }
-
-  public void renderGistText(String s) {
-    gistText.setText(s);
   }
 }

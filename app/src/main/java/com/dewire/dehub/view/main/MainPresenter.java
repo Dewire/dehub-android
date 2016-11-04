@@ -9,6 +9,7 @@ import com.dewire.dehub.model.State;
 import com.dewire.dehub.model.entity.GistEntity;
 import com.dewire.dehub.view.BasePresenter;
 import com.dewire.dehub.view.Navigation;
+import com.dewire.dehub.view.main.view.MainContract;
 
 import javax.inject.Inject;
 
@@ -16,7 +17,23 @@ import javax.inject.Inject;
  * Created by kl on 28/10/16.
  */
 
-public class MainPresenter extends BasePresenter<MainView> {
+public class MainPresenter extends BasePresenter<MainContract.View> {
+
+  //===----------------------------------------------------------------------===//
+  // Presenter contract
+  //===----------------------------------------------------------------------===//
+
+  public void onActionNewGist() {
+    navigation.navigateNewGist();
+  }
+
+  public void onActionViewGist(GistEntity data) {
+    navigation.navigateViewGist(data);
+  }
+
+  //===----------------------------------------------------------------------===//
+  // Implementation
+  //===----------------------------------------------------------------------===//
 
   @Inject State state;
   @Inject GistApi api;
@@ -34,20 +51,12 @@ public class MainPresenter extends BasePresenter<MainView> {
   }
 
   @Override
-  protected void onTakeView(MainView view) {
+  protected void onTakeView(MainContract.View view) {
     super.onTakeView(view);
     if (!State.hasData(state.gists())) {
       spin(api.loadGists()).subscribe();
     }
 
     life(state.gists().subscribe(view::displayGists));
-  }
-
-  public void onActionNewGist() {
-    navigation.navigateNewGist();
-  }
-
-  public void onActionViewGist(GistEntity data) {
-    navigation.navigateViewGist(data);
   }
 }

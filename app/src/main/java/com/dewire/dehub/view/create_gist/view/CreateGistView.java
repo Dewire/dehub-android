@@ -1,4 +1,4 @@
-package com.dewire.dehub.view.create_gist;
+package com.dewire.dehub.view.create_gist.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
+import com.dewire.dehub.view.create_gist.CreateGistPresenter;
 
 import nucleus.factory.RequiresPresenter;
 
@@ -16,7 +17,8 @@ import nucleus.factory.RequiresPresenter;
  */
 
 @RequiresPresenter(CreateGistPresenter.class)
-public class CreateGistView extends BaseSupportFragment<CreateGistPresenter> {
+public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
+  implements CreateGistContract.View {
 
   @Nullable
   @Override

@@ -1,6 +1,7 @@
 package com.dewire.dehub.view;
 
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -44,18 +45,37 @@ public abstract class BasePresenter<View> extends Presenter<View> {
     disposeBag.add(subscription);
   }
 
+  @CallSuper
   @Override
   protected void onCreate(@Nullable Bundle savedState) {
     checkNotNull(refWatcher, "did you forget to properly inject the presenter in onInject()?");
     super.onCreate(savedState);
   }
 
+  @CallSuper
   @Override
   protected void onTakeView(View view) {
-    super.onTakeView(view);
     Log.d(TAG, debug("onTakeView()") + " : id " + view.hashCode());
+    onSubscribe(getViewArguments(view));
   }
 
+  /**
+   * Use this method to do RxJava subscribes. This method is called immediately after onTakeView().
+   * It is safe to call view() from this method.
+   * @param arguments any arguments that were supplied to the view (e.g. via setArguments() on
+   *                  a fragment).
+   */
+  protected void onSubscribe(@Nullable Bundle arguments) {
+  }
+
+  private Bundle getViewArguments(View view) {
+    if (view instanceof Fragment) {
+      return ((Fragment)view).getArguments();
+    }
+    return null;
+  }
+
+  @CallSuper
   @Override
   protected void onDropView() {
     super.onDropView();
@@ -63,6 +83,7 @@ public abstract class BasePresenter<View> extends Presenter<View> {
     disposeBag.clear();
   }
 
+  @CallSuper
   @Override
   protected void onDestroy() {
     super.onDestroy();
@@ -106,7 +127,17 @@ public abstract class BasePresenter<View> extends Presenter<View> {
     return published;
   }
 
+  /**
+   * Given a Bundle returns the Parcelable for the given key.
+   * @throws NullPointerException if the fragment does not have arguments or does not have a
+   * value for the key.
+   * @throws ClassCastException if the value of for the key was of the wrong type.
+   */
+  protected <T> T getParcelable(Bundle bundle, String key) {
+    Object data = checkNotNull(bundle.getParcelable(key),
+        "tried to get parcelable for key " + key + " but was null");
 
-
-
+    //noinspection unchecked
+    return (T)data;
+  }
 }
