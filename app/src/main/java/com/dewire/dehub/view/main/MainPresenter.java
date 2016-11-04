@@ -51,12 +51,11 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
   }
 
   @Override
-  protected void onTakeView(MainContract.View view) {
-    super.onTakeView(view);
+  protected void onSubscribe(@Nullable Bundle arguments) {
     if (!State.hasData(state.gists())) {
       spin(api.loadGists()).subscribe();
     }
 
-    life(state.gists().subscribe(view::displayGists));
+    life(state.gists().subscribe(view()::displayGists));
   }
 }
