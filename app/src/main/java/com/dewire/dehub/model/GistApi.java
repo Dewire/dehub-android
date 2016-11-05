@@ -72,7 +72,7 @@ public class GistApi {
     Observable<List<GistEntity>> getGists();
 
     @GET
-    public Observable<String> get(@Url String url);
+    Observable<String> get(@Url String url);
   }
 }
 
