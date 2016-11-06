@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
@@ -26,6 +27,9 @@ public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
                            @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
 
-    return inflater.inflate(R.layout.fragment_create_gist, container, false);
+    View v =  inflater.inflate(R.layout.fragment_create_gist, container, false);
+    ((WebView)v.findViewById(R.id.web_view))
+        .loadUrl("http://www.animatedgif.net/underconstruction/anim0208-1_e0.gif");
+    return v;
   }
 }

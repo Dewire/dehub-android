@@ -124,4 +124,39 @@ public class LoginTest extends BaseTest {
     verify(view).enableLoginButton(false);
   }
 
+  @Test
+  public void login_button_is_enabled_when_login_fails() throws Exception {
+
+    when(view.usernameText()).thenReturn(Observable.just("username"));
+    when(view.passwordText()).thenReturn(Observable.just("password"));
+
+    BehaviorSubject<Void> click = BehaviorSubject.create();
+    when(view.loginButtonClick()).thenReturn(click);
+
+    when(api.login(anyString(), anyString())).thenReturn(Observable.error(new Exception()));
+
+    presenter.onSubscribe(null);
+
+    click.onNext(null);
+
+    verify(view, never()).starAppActivity();
+    verify(view).enableLoginButton(false);
+  }
+
+  @Test
+  public void app_activity_is_started_after_successful_login() throws Exception {
+
+    when(view.usernameText()).thenReturn(Observable.just("username"));
+    when(view.passwordText()).thenReturn(Observable.just("password"));
+
+    BehaviorSubject<Void> click = BehaviorSubject.create();
+    when(view.loginButtonClick()).thenReturn(click);
+
+    presenter.onSubscribe(null);
+
+    click.onNext(null);
+
+    verify(view).starAppActivity();
+  }
+
 }
