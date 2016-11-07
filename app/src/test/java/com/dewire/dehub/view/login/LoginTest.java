@@ -1,9 +1,15 @@
 package com.dewire.dehub.view.login;
 
-import android.util.Log;
+import static com.dewire.dehub.TestUtil.setRefWatcher;
+import static com.dewire.dehub.TestUtil.setView;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import com.dewire.dehub.BaseTest;
-import com.dewire.dehub.TestUtil;
 import com.dewire.dehub.model.GistApi;
 import com.dewire.dehub.view.login.view.LoginContract;
 import com.dewire.dehub.view.util.LoadingIndicator;
@@ -11,20 +17,9 @@ import com.squareup.leakcanary.RefWatcher;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import nucleus.presenter.Presenter;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
-
-import static com.dewire.dehub.TestUtil.setRefWatcher;
-import static com.dewire.dehub.TestUtil.setView;
-import static org.mockito.Mockito.*;
-
-import static org.junit.Assert.*;
 
 public class LoginTest extends BaseTest {
 
@@ -32,6 +27,9 @@ public class LoginTest extends BaseTest {
   LoginContract.View view;
   GistApi api;
 
+  /**
+   * Setup.
+   */
   @Before
   public void setup() {
 

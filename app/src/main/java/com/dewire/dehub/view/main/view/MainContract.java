@@ -12,5 +12,7 @@ public interface MainContract {
 
   interface View {
     void displayGists(List<GistEntity> gists);
+
+    void stopRefreshing();
   }
 }

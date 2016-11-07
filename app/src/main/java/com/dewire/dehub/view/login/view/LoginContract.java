@@ -10,9 +10,13 @@ public interface LoginContract {
 
   interface View {
     Observable<CharSequence> usernameText();
+
     Observable<CharSequence> passwordText();
+
     Observable<Void> loginButtonClick();
+
     void enableLoginButton(Boolean enabled);
+
     void starAppActivity();
   }
 }

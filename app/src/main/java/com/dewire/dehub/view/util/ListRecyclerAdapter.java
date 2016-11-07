@@ -14,8 +14,8 @@ import rx.functions.Action2;
  * Created by kl on 31/10/16.
  */
 
-public abstract class ListRecyclerAdapter<D, VH extends RecyclerView.ViewHolder>
-    extends RecyclerView.Adapter<VH> {
+public abstract class ListRecyclerAdapter<D, H extends RecyclerView.ViewHolder>
+    extends RecyclerView.Adapter<H> {
 
   protected List<D> data;
   private Action2<Integer, D> clickListener;
@@ -45,10 +45,10 @@ public abstract class ListRecyclerAdapter<D, VH extends RecyclerView.ViewHolder>
 
   @Override
   @CallSuper
-  public void onBindViewHolder(VH holder, int position) {
+  public void onBindViewHolder(H holder, int position) {
     D entity = data.get(position);
     setViewClickListener(holder.itemView, position, entity);
-    onBindViewHolder(holder, entity);
+    onBindViewHolderWithData(holder, entity);
   }
 
   private void setViewClickListener(View itemView, int position, D entity) {
@@ -61,7 +61,7 @@ public abstract class ListRecyclerAdapter<D, VH extends RecyclerView.ViewHolder>
     }
   }
 
-  public void onBindViewHolder(VH holder, D data) {
+  public void onBindViewHolderWithData(H holder, D data) {
   }
 
   public boolean isClickable() {

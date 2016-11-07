@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import butterknife.BindView;
+
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.AppActivity;
 import com.dewire.dehub.view.BaseAppCompatActivity;
@@ -12,13 +14,12 @@ import com.dewire.dehub.view.login.LoginPresenter;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
-import butterknife.BindView;
 import nucleus.factory.RequiresPresenter;
 import rx.Observable;
 
 @RequiresPresenter(LoginPresenter.class)
 public class LoginActivity extends BaseAppCompatActivity<LoginPresenter>
-  implements LoginContract.View {
+    implements LoginContract.View {
 
   //===----------------------------------------------------------------------===//
   // View contract

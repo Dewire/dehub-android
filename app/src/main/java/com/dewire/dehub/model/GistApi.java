@@ -1,5 +1,7 @@
 package com.dewire.dehub.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.util.Log;
 
 import com.dewire.dehub.model.entity.GistEntity;
@@ -12,8 +14,6 @@ import retrofit2.http.Url;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.BehaviorSubject;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class GistApi {
 
@@ -40,7 +40,8 @@ public class GistApi {
   private <T> Observable<Void> connect(Observable<T> observable, BehaviorSubject<T> stateSubject) {
     BehaviorSubject<Void> statusSubject = BehaviorSubject.create();
 
-    networkObservable(observable).subscribe(data -> {
+    networkObservable(observable).subscribe(
+        data -> {
           stateSubject.onNext(data);
           statusSubject.onNext(null);
         },
@@ -53,7 +54,7 @@ public class GistApi {
   /**
    * Downloads an URL. The server response content type must be text/plain.
    * @param url gets the URL.
-   * @return an Observable<String> of the URL's body.
+   * @return an Observable String of the URL's body.
    */
   public Observable<String> get(String url) {
     return networkObservable(api.get(url));

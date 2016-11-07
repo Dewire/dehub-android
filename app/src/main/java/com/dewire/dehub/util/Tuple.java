@@ -9,9 +9,10 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class Tuple<T> {
   public abstract T first();
+
   public abstract T second();
 
-  public static<T> Tuple<T> create(T first, T second) {
+  public static <T> Tuple<T> create(T first, T second) {
     return new AutoValue_Tuple<>(first, second);
   }
 }

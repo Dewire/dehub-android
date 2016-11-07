@@ -8,14 +8,18 @@ import rx.functions.Action0;
  */
 public class CompletionObserver implements Observer<Object> {
 
+  public static CompletionObserver create(Action0 callback) {
+    return new CompletionObserver(callback);
+  }
+
   private final Action0 callback;
 
-  public CompletionObserver(Action0 callback) {
+  private CompletionObserver(Action0 callback) {
     this.callback = callback;
   }
 
   @Override
-  public void onNext(Object o) {
+  public void onNext(Object object) {
   }
 
   @Override
@@ -24,7 +28,7 @@ public class CompletionObserver implements Observer<Object> {
   }
 
   @Override
-  public void onError(Throwable e) {
+  public void onError(Throwable error) {
     callback.call();
   }
 }

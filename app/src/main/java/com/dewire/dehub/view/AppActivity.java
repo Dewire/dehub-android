@@ -6,12 +6,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.login.view.LoginActivity;
 import com.dewire.dehub.view.main.view.MainView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(AppPresenter.class)

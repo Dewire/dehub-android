@@ -1,4 +1,4 @@
-package com.dewire.dehub.view.view_gist.view;
+package com.dewire.dehub.view.viewgist.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindView;
+
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
-import com.dewire.dehub.view.view_gist.ViewGistPresenter;
+import com.dewire.dehub.view.viewgist.ViewGistPresenter;
 
-import javax.inject.Inject;
-
-import butterknife.BindView;
 import nucleus.factory.RequiresPresenter;
 
 /**
@@ -22,7 +21,7 @@ import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(ViewGistPresenter.class)
 public class ViewGistView extends BaseSupportFragment<ViewGistPresenter>
-  implements ViewGistContract.View {
+    implements ViewGistContract.View {
 
   //===----------------------------------------------------------------------===//
   // View contract

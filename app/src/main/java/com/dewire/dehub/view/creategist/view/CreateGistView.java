@@ -1,4 +1,4 @@
-package com.dewire.dehub.view.create_gist.view;
+package com.dewire.dehub.view.creategist.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +9,7 @@ import android.webkit.WebView;
 
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
-import com.dewire.dehub.view.create_gist.CreateGistPresenter;
+import com.dewire.dehub.view.creategist.CreateGistPresenter;
 
 import nucleus.factory.RequiresPresenter;
 
@@ -19,7 +19,7 @@ import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(CreateGistPresenter.class)
 public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
-  implements CreateGistContract.View {
+    implements CreateGistContract.View {
 
   @Nullable
   @Override
@@ -27,9 +27,9 @@ public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
                            @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
 
-    View v =  inflater.inflate(R.layout.fragment_create_gist, container, false);
-    ((WebView)v.findViewById(R.id.web_view))
+    View view = inflater.inflate(R.layout.fragment_create_gist, container, false);
+    ((WebView)view.findViewById(R.id.web_view))
         .loadUrl("http://www.animatedgif.net/underconstruction/anim0208-1_e0.gif");
-    return v;
+    return view;
   }
 }

@@ -1,4 +1,4 @@
-package com.dewire.dehub.view.create_gist.view;
+package com.dewire.dehub.view.creategist.view;
 
 /**
  * Created by kl on 04/11/16.

@@ -20,6 +20,7 @@ public final class Services {
   public final State state;
 
   private static String basicAuth = "";
+
   static void setAuth(String username, String password) {
     basicAuth = Credentials.basic(username, password);
   }

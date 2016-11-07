@@ -1,9 +1,8 @@
-package com.dewire.dehub.view.create_gist;
+package com.dewire.dehub.view.creategist;
 
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.view.BasePresenter;
-import com.dewire.dehub.view.create_gist.view.CreateGistContract;
-import com.dewire.dehub.view.create_gist.view.CreateGistView;
+import com.dewire.dehub.view.creategist.view.CreateGistContract;
 
 /**
  * Created by kl on 01/11/16.

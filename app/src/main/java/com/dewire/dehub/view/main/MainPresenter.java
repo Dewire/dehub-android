@@ -2,11 +2,13 @@ package com.dewire.dehub.view.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.model.GistApi;
 import com.dewire.dehub.model.State;
 import com.dewire.dehub.model.entity.GistEntity;
+import com.dewire.dehub.util.LifeObserver;
 import com.dewire.dehub.view.BasePresenter;
 import com.dewire.dehub.view.Navigation;
 import com.dewire.dehub.view.main.view.MainContract;
@@ -31,6 +33,10 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
     navigation.navigateViewGist(data);
   }
 
+  public void onRefresh() {
+    api.loadGists().subscribe(LifeObserver.create(this, () -> view().stopRefreshing()));
+  }
+
   //===----------------------------------------------------------------------===//
   // Implementation
   //===----------------------------------------------------------------------===//
@@ -47,7 +53,6 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
   @Override
   protected void onCreate(@Nullable Bundle savedState) {
     super.onCreate(savedState);
-
   }
 
   @Override
@@ -57,5 +62,11 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
     }
 
     life(state.gists().subscribe(view()::displayGists));
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    Log.d("DEBUG", "destroying presenter: " + hashCode());
   }
 }

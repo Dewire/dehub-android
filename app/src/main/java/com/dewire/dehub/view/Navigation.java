@@ -8,5 +8,6 @@ import com.dewire.dehub.model.entity.GistEntity;
 
 public interface Navigation {
   void navigateNewGist();
+
   void navigateViewGist(GistEntity data);
 }

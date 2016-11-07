@@ -13,10 +13,15 @@ import com.squareup.moshi.Moshi;
 
 @AutoValue
 public abstract class GistFileEntity implements Parcelable {
+
   public abstract int size();
+
   public abstract String raw_url();
+
   public abstract String type();
+
   public abstract boolean truncated();
+
   @Nullable public abstract String language();
 
   public static JsonAdapter<GistFileEntity> jsonAdapter(Moshi moshi) {

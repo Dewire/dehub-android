@@ -1,5 +1,7 @@
 package com.dewire.dehub.view;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -18,14 +20,15 @@ import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.google.common.base.Preconditions.*;
-
-public abstract class BasePresenter<View> extends Presenter<View> {
+public abstract class BasePresenter<V> extends Presenter<V> {
 
   private static final String TAG = "BasePresenter";
 
   @Inject protected RefWatcher refWatcher;
-  public RefWatcher getRefWatcher() { return refWatcher; }
+
+  public RefWatcher getRefWatcher() {
+    return refWatcher;
+  }
 
   private final CompositeSubscription disposeBag = new CompositeSubscription();
   private int activeSpinnerRequests = 0;
@@ -49,13 +52,13 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   @Override
   protected void onCreate(@Nullable Bundle savedState) {
     checkNotNull(refWatcher, "did you forget to properly inject the presenter in onInject()?");
-    super.onCreate(savedState);
   }
 
   @CallSuper
   @Override
-  protected void onTakeView(View view) {
+  protected void onTakeView(V view) {
     Log.d(TAG, debug("onTakeView()") + " : id " + view.hashCode());
+    Log.d(TAG, "PRESENTER: " + hashCode());
     onSubscribe(getViewArguments(view));
   }
 
@@ -68,7 +71,7 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   protected void onSubscribe(@Nullable Bundle arguments) {
   }
 
-  private Bundle getViewArguments(View view) {
+  private Bundle getViewArguments(V view) {
     if (view instanceof Fragment) {
       return ((Fragment)view).getArguments();
     }
@@ -78,7 +81,6 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   @CallSuper
   @Override
   protected void onDropView() {
-    super.onDropView();
     Log.d(TAG, debug("onDropView()"));
     disposeBag.clear();
   }
@@ -86,7 +88,6 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   @CallSuper
   @Override
   protected void onDestroy() {
-    super.onDestroy();
     Log.d(TAG, debug("onDestroy() "));
     refWatcher.watch(this);
   }
@@ -99,9 +100,9 @@ public abstract class BasePresenter<View> extends Presenter<View> {
    * Calls getView() and throws a NullPointerException is getView() returns null, else returns
    * the view returned by getView().
    */
-  protected View view() {
-    return checkNotNull(getView(), "getView() returned null. This method must be called" +
-        "between onTakeView() and onDropView()");
+  protected V view() {
+    return checkNotNull(getView(), "getView() returned null. This method must be called"
+        + "between onTakeView() and onDropView()");
   }
 
   /**
@@ -114,13 +115,18 @@ public abstract class BasePresenter<View> extends Presenter<View> {
       throw new RuntimeException("spin() called but view did not implement LoadingIndicator");
     }
 
-    if (activeSpinnerRequests < 1) ((LoadingIndicator)view()).showLoadingIndicator();
+    if (activeSpinnerRequests < 1) {
+      ((LoadingIndicator)view()).showLoadingIndicator();
+    }
     activeSpinnerRequests += 1;
 
     Observable<T> published = observable.publish().autoConnect(2);
-    published.subscribe(new CompletionObserver(() -> {
+
+    published.subscribe(CompletionObserver.create(() -> {
       activeSpinnerRequests -= 1;
-      if (getView() ==  null || activeSpinnerRequests > 0) return;
+      if (getView() ==  null || activeSpinnerRequests > 0) {
+        return;
+      }
       ((LoadingIndicator)getView()).hideLoadingIndicator();
     }));
 
@@ -130,8 +136,8 @@ public abstract class BasePresenter<View> extends Presenter<View> {
   /**
    * Given a Bundle returns the Parcelable for the given key.
    * @throws NullPointerException if the fragment does not have arguments or does not have a
-   * value for the key.
-   * @throws ClassCastException if the value of for the key was of the wrong type.
+   *     value for the key.
+   * @throws ClassCastException if the value for the key was of the wrong type.
    */
   protected <T> T getParcelable(Bundle bundle, String key) {
     Object data = checkNotNull(bundle.getParcelable(key),

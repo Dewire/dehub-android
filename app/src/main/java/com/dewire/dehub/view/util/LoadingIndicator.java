@@ -5,5 +5,6 @@ package com.dewire.dehub.view.util;
  */
 public interface LoadingIndicator {
   void showLoadingIndicator();
+
   void hideLoadingIndicator();
 }

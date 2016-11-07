@@ -1,12 +1,12 @@
 package com.dewire.dehub.view.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by kl on 28/10/16.
@@ -15,11 +15,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class Views {
   private Views() {}
 
+  /**
+   * Returns a pre-configured loading indicator.
+   */
   public static ProgressBar loadingIndicator(Context context) {
-    ProgressBar i = new ProgressBar(context);
-    i.setIndeterminate(true);
-    i.setVisibility(View.GONE);
-    return i;
+    ProgressBar progressBar = new ProgressBar(context);
+    progressBar.setIndeterminate(true);
+    progressBar.setVisibility(View.GONE);
+    return progressBar;
   }
 
   /**
@@ -29,8 +32,8 @@ public final class Views {
   public static Fragment instantiateFragment(Class<? extends Fragment> fragmentClass) {
     try {
       return fragmentClass.newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    } catch (Exception exception) {
+      throw new RuntimeException(exception);
     }
   }
 

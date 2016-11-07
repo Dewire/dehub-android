@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.model.GistApi;
-import com.dewire.dehub.util.NetObserver;
+import com.dewire.dehub.util.LifeObserver;
 import com.dewire.dehub.util.Tuple;
 import com.dewire.dehub.view.BasePresenter;
 import com.dewire.dehub.view.login.view.LoginContract;
@@ -40,13 +40,15 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> {
   private void tryLogin(String usernameText, String passwordText) {
     view().enableLoginButton(false);
 
-    spin(api.login(usernameText, passwordText)).subscribe(NetObserver.create(this, v -> {
-      Log.d("LOGIN", "ok");
-      view().starAppActivity();
-    }, error -> {
-      Log.e("LOGIN", "failed");
-      view().enableLoginButton(true);
-    }));
+    spin(api.login(usernameText, passwordText)).subscribe(LifeObserver.create(this,
+        v -> {
+          Log.d("LOGIN", "ok");
+          view().starAppActivity();
+        },
+        error -> {
+          Log.e("LOGIN", "failed");
+          view().enableLoginButton(true);
+        }));
   }
 
   protected void onInject(AppComponent component) {

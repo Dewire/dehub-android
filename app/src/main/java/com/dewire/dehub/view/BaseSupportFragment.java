@@ -1,30 +1,32 @@
 package com.dewire.dehub.view;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import butterknife.ButterKnife;
+
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.dewire.dehub.view.util.Views;
 import com.squareup.leakcanary.RefWatcher;
 
-import butterknife.ButterKnife;
 import nucleus.view.NucleusSupportFragment;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by kl on 28/10/16.
  */
 
 public class BaseSupportFragment<P extends BasePresenter>
-  extends NucleusSupportFragment<P> implements LoadingIndicator {
+    extends NucleusSupportFragment<P> implements LoadingIndicator {
 
   private static final String IS_SPINNING = "IS_SPINNING";
 
@@ -32,12 +34,14 @@ public class BaseSupportFragment<P extends BasePresenter>
 
   private ProgressBar loadingIndicator;
 
+  @CallSuper
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
     setPresenterFactory(InjectingReflectionPresenterFactory.fromViewClass(getClass(), context));
   }
 
+  @CallSuper
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -62,6 +66,7 @@ public class BaseSupportFragment<P extends BasePresenter>
     }
   }
 
+  @CallSuper
   @Override
   public void onSaveInstanceState(Bundle bundle) {
     super.onSaveInstanceState(bundle);
@@ -74,16 +79,22 @@ public class BaseSupportFragment<P extends BasePresenter>
     }
   }
 
+  @CallSuper
   @Override
   public void onResume() {
     super.onResume();
-    if (refWatcher == null) refWatcher = getPresenter().getRefWatcher();
+    if (refWatcher == null) {
+      refWatcher = getPresenter().getRefWatcher();
+    }
   }
 
+  @CallSuper
   @Override
   public void onDestroy() {
     super.onDestroy();
-    if (refWatcher != null) refWatcher.watch(this);
+    if (refWatcher != null) {
+      refWatcher.watch(this);
+    }
   }
 
   @Override

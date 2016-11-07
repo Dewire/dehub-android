@@ -19,7 +19,9 @@ public class AppPresenter extends BasePresenter<AppActivity> {
   }
 
   @Override
-  protected void onInject(AppComponent component) { component.inject(this); }
+  protected void onInject(AppComponent component) {
+    component.inject(this);
+  }
 }
 
 

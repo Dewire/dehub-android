@@ -27,8 +27,8 @@ public class TestUtil {
       Field field = targetClass.getDeclaredField(fieldName);
       field.setAccessible(true);
       field.set(target, value);
-    } catch (NoSuchFieldException | IllegalAccessException e) {
-      throw new RuntimeException(e);
+    } catch (NoSuchFieldException | IllegalAccessException exception) {
+      throw new RuntimeException(exception);
     }
   }
 }

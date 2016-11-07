@@ -38,8 +38,8 @@ public final class State {
       for (Field f : subjectFields) {
         f.set(this, BehaviorSubject.create());
       }
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
+    } catch (IllegalAccessException exception) {
+      throw new RuntimeException(exception);
     }
   }
 
@@ -51,6 +51,12 @@ public final class State {
     basicAuth = Credentials.basic(username, password);
   }
 
+  /**
+   * Returns true if the given state has data (i.e. onNext has been called at least once since
+   * the state was created).
+   * @param state the state which must be a BehaviorSubject.
+   * @return true if the state has data, otherwise false.
+   */
   public static boolean hasData(Observable<?> state) {
     if (state instanceof BehaviorSubject) {
       return ((BehaviorSubject<?>)state).getValue() != null;
@@ -62,8 +68,9 @@ public final class State {
   // State
 
   BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
-  public Observable<List<GistEntity>> gists() { return gists; }
 
-
+  public Observable<List<GistEntity>> gists() {
+    return gists;
+  }
 }
 

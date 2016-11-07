@@ -7,10 +7,11 @@ import com.dewire.dehub.view.Navigator;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
+
 import retrofit2.Retrofit;
 
 /**

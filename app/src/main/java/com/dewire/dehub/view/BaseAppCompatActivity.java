@@ -1,6 +1,9 @@
 package com.dewire.dehub.view;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -11,13 +14,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import butterknife.ButterKnife;
+
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.dewire.dehub.view.util.Views;
 
-import butterknife.ButterKnife;
 import nucleus.view.NucleusAppCompatActivity;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by kl on 14/10/16.
@@ -30,12 +33,14 @@ public abstract class BaseAppCompatActivity<P extends BasePresenter>
 
   private ProgressBar loadingIndicator;
 
+  @CallSuper
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     setPresenterFactory(InjectingReflectionPresenterFactory.fromViewClass(getClass(), this));
     super.onCreate(savedInstanceState);
   }
 
+  @CallSuper
   @Override
   protected void onPostCreate(@Nullable Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
@@ -44,12 +49,6 @@ public abstract class BaseAppCompatActivity<P extends BasePresenter>
     if (savedInstanceState != null && savedInstanceState.getBoolean(IS_SPINNING, false)) {
       showLoadingIndicator();
     }
-  }
-
-  @Override
-  protected void onSaveInstanceState(@NonNull Bundle outState) {
-    super.onSaveInstanceState(outState);
-    outState.putBoolean(IS_SPINNING, loadingIndicator.getVisibility() == View.VISIBLE);
   }
 
   private void setupViews() {
@@ -61,15 +60,24 @@ public abstract class BaseAppCompatActivity<P extends BasePresenter>
     contentView.addView(loadingIndicator);
   }
 
+  @CallSuper
+  @Override
+  protected void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putBoolean(IS_SPINNING, loadingIndicator.getVisibility() == View.VISIBLE);
+  }
+
+  @CallSuper
   @Override
   public void setContentView(View contentView) {
     super.setContentView(contentView);
     ButterKnife.bind(this);
   }
 
+  @CallSuper
   @Override
-  public void setContentView(@LayoutRes int layoutResID) {
-    super.setContentView(layoutResID);
+  public void setContentView(@LayoutRes int layoutResId) {
+    super.setContentView(layoutResId);
     ButterKnife.bind(this);
   }
 

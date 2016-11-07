@@ -5,15 +5,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.dewire.dehub.BuildConfig;
-import com.dewire.dehub.model.AdapterFactory;
-import com.dewire.dehub.model.State;
 import com.squareup.moshi.Moshi;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Interceptor;
+
+import javax.inject.Singleton;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -53,9 +51,9 @@ public class NetModule {
   @Singleton
   HttpLoggingInterceptor loggingInterceptor() {
     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-    interceptor.setLevel(BuildConfig.DEBUG ?
-        HttpLoggingInterceptor.Level.BODY :
-        HttpLoggingInterceptor.Level.NONE);
+    interceptor.setLevel(BuildConfig.DEBUG
+        ? HttpLoggingInterceptor.Level.BODY
+        : HttpLoggingInterceptor.Level.NONE);
     return interceptor;
   }
 

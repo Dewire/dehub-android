@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'checkstyle'
+
 
 android {
     compileSdkVersion 25
@@ -73,4 +75,41 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+}
+
+
+task checkstyle(type: Checkstyle) {
+    // Cleaning the old log because of the creation of the new ones (not sure if totally needed)
+    delete fileTree(dir: "${project.rootDir}/app/build/reports")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    // Empty classpath
+    classpath = files()
+    // Failing the build
+    ignoreFailures = false
+}
+
+checkstyle {
+    configFile file("${project.rootDir}/config/quality/checkstyle/checkstyle.xml")
+    toolVersion = '7.1.1'
+    ignoreFailures = false
+}
+
+project.afterEvaluate {
+    preBuild.dependsOn 'checkstyle'
+}
+
+// You need this hack for the build to fail on Checkstyle warnings. This should be
+// changed if this issue is resolved: https://issues.gradle.org/browse/GRADLE-2888
+tasks.withType(Checkstyle).each { checkstyleTask ->
+    checkstyleTask.doLast {
+        reports.all { report ->
+            def outputFile = report.destination
+            if (outputFile.exists() && outputFile.text.contains("<error ")) {
+                throw new GradleException(
+                        "There were checkstyle warnings! For more info check $outputFile")
+            }
+        }
+    }
 }
