@@ -1,12 +1,9 @@
 package com.dewire.dehub.model;
 
 import com.dewire.dehub.model.entity.GistEntity;
-import com.google.auto.value.AutoValue;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +17,7 @@ import rx.subjects.BehaviorSubject;
 
 public final class State {
   private String basicAuth = "";
-  private Iterable<Field> subjectFields = getSubjectFields();
+  private final Iterable<Field> subjectFields = getSubjectFields();
 
   private Iterable<Field> getSubjectFields() {
     return Iterables.filter(Arrays.asList(getClass().getDeclaredFields()), field -> {
@@ -67,7 +64,7 @@ public final class State {
 
   // State
 
-  BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
+  final BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
 
   public Observable<List<GistEntity>> gists() {
     return gists;

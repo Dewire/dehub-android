@@ -65,6 +65,7 @@ public final class Navigator implements Navigation {
     }
   }
 
+  @SuppressWarnings("SameParameterValue")
   private Bundle parcelBundle(String key, Parcelable parcelable) {
     Bundle bundle = new Bundle();
     bundle.putParcelable(key, parcelable);

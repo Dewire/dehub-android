@@ -19,7 +19,7 @@ import rx.Observable;
 
 @RequiresPresenter(LoginPresenter.class)
 public class LoginActivity extends BaseAppCompatActivity<LoginPresenter>
-    implements LoginContract.View {
+    implements LoginContract {
 
   //===----------------------------------------------------------------------===//
   // View contract
@@ -51,9 +51,12 @@ public class LoginActivity extends BaseAppCompatActivity<LoginPresenter>
   // Implementation
   //===----------------------------------------------------------------------===//
 
-  @BindView(R.id.username_text_view) TextView usernameTextView;
-  @BindView(R.id.password_text_view) TextView passwordTextView;
-  @BindView(R.id.login_button) Button loginButton;
+  @BindView(R.id.username_text_view)
+  TextView usernameTextView;
+  @BindView(R.id.password_text_view)
+  TextView passwordTextView;
+  @BindView(R.id.login_button)
+  Button loginButton;
 
   @Override
   public void enableLoginButton(Boolean enabled) {
@@ -64,15 +67,5 @@ public class LoginActivity extends BaseAppCompatActivity<LoginPresenter>
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
   }
 }

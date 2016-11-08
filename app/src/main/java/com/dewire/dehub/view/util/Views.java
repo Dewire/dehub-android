@@ -1,9 +1,6 @@
 package com.dewire.dehub.view.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ProgressBar;

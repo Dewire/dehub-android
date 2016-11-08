@@ -15,7 +15,7 @@ import nucleus.presenter.Presenter;
 class InjectingReflectionPresenterFactory<P extends Presenter>
     extends ReflectionPresenterFactory<P> {
 
-  private Context appContext;
+  private final Context appContext;
 
   private InjectingReflectionPresenterFactory(Class<P> presenterClass, Context context) {
     super(presenterClass);

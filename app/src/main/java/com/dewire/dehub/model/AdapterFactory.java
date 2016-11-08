@@ -8,7 +8,7 @@ import com.squareup.moshi.JsonAdapter;
  */
 
 @MoshiAdapterFactory
-public abstract class AdapterFactory implements JsonAdapter.Factory {
+abstract class AdapterFactory implements JsonAdapter.Factory {
 
   // Static factory method to access the package
   // private generated implementation

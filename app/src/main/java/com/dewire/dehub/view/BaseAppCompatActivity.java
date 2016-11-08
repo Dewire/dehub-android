@@ -98,7 +98,8 @@ public abstract class BaseAppCompatActivity<P extends BasePresenter>
    * @param fragId the view container ID to add the fragment to
    * @param fragClass the class of the fragment.
    */
-  protected void addFragUnlessPresent(@IdRes int fragId, Class<? extends Fragment> fragClass) {
+  @SuppressWarnings("SameParameterValue")
+  void addFragUnlessPresent(@IdRes int fragId, Class<? extends Fragment> fragClass) {
     if (getSupportFragmentManager().findFragmentById(fragId) != null) {
       return;
     }

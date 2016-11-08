@@ -6,7 +6,5 @@ package com.dewire.dehub.view.viewgist.view;
 
 public interface ViewGistContract {
 
-  interface View {
-    void setGistText(CharSequence text);
-  }
+  void setGistText(CharSequence text);
 }

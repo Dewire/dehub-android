@@ -11,7 +11,8 @@ import javax.inject.Inject;
 
 public class AppPresenter extends BasePresenter<AppActivity> {
 
-  @Inject State state;
+  @Inject
+  State state;
 
   void onActionLogout() {
     state.reset();

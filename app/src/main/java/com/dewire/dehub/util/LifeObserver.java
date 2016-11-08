@@ -36,6 +36,7 @@ public class LifeObserver<T> implements Observer<T> {
     return create(presenter, null, e -> callback.call(), callback);
   }
 
+  @SuppressWarnings("unused")
   public static <T> LifeObserver<T> create(
       BasePresenter<?> presenter,
       Action1<T> onNext
@@ -54,7 +55,7 @@ public class LifeObserver<T> implements Observer<T> {
   /**
    * Creates a LifeObserver. All the callbacks may be null in which case they will not be called.
    */
-  public static <T> LifeObserver<T> create(
+  private static <T> LifeObserver<T> create(
       BasePresenter<?> presenter,
       Action1<T> onNext,
       Action1<Throwable> onError,

@@ -21,7 +21,7 @@ import retrofit2.Retrofit;
 @Module
 public class AppModule {
 
-  Application application;
+  private final Application application;
 
   public AppModule(Application application) {
     this.application = application;

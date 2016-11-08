@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.dewire.dehub.R;
@@ -17,8 +15,6 @@ import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(AppPresenter.class)
 public class AppActivity extends BaseAppCompatActivity<AppPresenter> {
-
-  @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

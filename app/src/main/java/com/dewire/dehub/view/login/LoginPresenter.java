@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-public class LoginPresenter extends BasePresenter<LoginContract.View> {
+public class LoginPresenter extends BasePresenter<LoginContract> {
 
   @Inject GistApi api;
 

@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">DeHub</string>
   <string name="login">Login</string>
-  <string name="username">username</string>
+  <string name="username">usernamez</string>
   <string name="password">password</string>
   <string name="action_logout">Logga ut</string>
   <string name="add_new_gist_menu">New Gist</string>

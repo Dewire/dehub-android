@@ -19,7 +19,7 @@ import javax.inject.Inject;
  * Created by kl on 28/10/16.
  */
 
-public class MainPresenter extends BasePresenter<MainContract.View> {
+public class MainPresenter extends BasePresenter<MainContract> {
 
   //===----------------------------------------------------------------------===//
   // Presenter contract

@@ -23,9 +23,9 @@ import rx.subjects.BehaviorSubject;
 
 public class LoginTest extends BaseTest {
 
-  LoginPresenter presenter;
-  LoginContract.View view;
-  GistApi api;
+  private LoginPresenter presenter;
+  private LoginContract view;
+  private GistApi api;
 
   /**
    * Setup.
@@ -42,8 +42,8 @@ public class LoginTest extends BaseTest {
     setRefWatcher(presenter, RefWatcher.DISABLED);
   }
 
-  private LoginContract.View makeViewMock() {
-    LoginContract.View view = mock(LoginContract.View.class,
+  private LoginContract makeViewMock() {
+    LoginContract view = mock(LoginContract.class,
         withSettings().extraInterfaces(LoadingIndicator.class));
 
     when(view.usernameText()).thenReturn(Observable.just(""));

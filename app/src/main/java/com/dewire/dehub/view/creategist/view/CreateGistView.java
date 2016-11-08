@@ -19,7 +19,7 @@ import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(CreateGistPresenter.class)
 public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
-    implements CreateGistContract.View {
+    implements CreateGistContract {
 
   @Nullable
   @Override

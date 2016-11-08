@@ -30,7 +30,7 @@ public class BaseSupportFragment<P extends BasePresenter>
 
   private static final String IS_SPINNING = "IS_SPINNING";
 
-  RefWatcher refWatcher;
+  private RefWatcher refWatcher;
 
   private ProgressBar loadingIndicator;
 

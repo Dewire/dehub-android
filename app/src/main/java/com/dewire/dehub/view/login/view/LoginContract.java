@@ -8,15 +8,13 @@ import rx.Observable;
 
 public interface LoginContract {
 
-  interface View {
-    Observable<CharSequence> usernameText();
+  Observable<CharSequence> usernameText();
 
-    Observable<CharSequence> passwordText();
+  Observable<CharSequence> passwordText();
 
-    Observable<Void> loginButtonClick();
+  Observable<Void> loginButtonClick();
 
-    void enableLoginButton(Boolean enabled);
+  void enableLoginButton(Boolean enabled);
 
-    void starAppActivity();
-  }
+  void starAppActivity();
 }

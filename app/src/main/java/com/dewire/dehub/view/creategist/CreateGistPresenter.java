@@ -8,7 +8,7 @@ import com.dewire.dehub.view.creategist.view.CreateGistContract;
  * Created by kl on 01/11/16.
  */
 
-public class CreateGistPresenter extends BasePresenter<CreateGistContract.View> {
+public class CreateGistPresenter extends BasePresenter<CreateGistContract> {
 
   @Override
   protected void onInject(AppComponent component) {

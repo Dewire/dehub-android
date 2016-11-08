@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 
 @Singleton
 @Component(modules = {AppModule.class, NetModule.class})
+@SuppressWarnings("unused")
 public interface AppComponent {
   void inject(DehubApplication dehubApplication);
 

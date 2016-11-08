@@ -27,8 +27,9 @@ import rx.schedulers.Schedulers;
 @Module
 public class NetModule {
 
-  private String baseUrl;
+  private final String baseUrl;
 
+  @SuppressWarnings("SameParameterValue")
   public NetModule(String baseUrl) {
     this.baseUrl = baseUrl;
   }
@@ -71,7 +72,7 @@ public class NetModule {
 
   @Provides
   @Singleton
-  Retrofit retrofit(State state, OkHttpClient client, Moshi moshi) {
+  Retrofit retrofit(OkHttpClient client, Moshi moshi) {
     return new Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(client)

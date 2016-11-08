@@ -17,7 +17,7 @@ import rx.functions.Action2;
 public abstract class ListRecyclerAdapter<D, H extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<H> {
 
-  protected List<D> data;
+  private List<D> data;
   private Action2<Integer, D> clickListener;
 
   public void setOnItemClickListener(Action2<Integer, D> listener) {
@@ -34,6 +34,7 @@ public abstract class ListRecyclerAdapter<D, H extends RecyclerView.ViewHolder>
     this.data = Collections.unmodifiableList(data);
   }
 
+  @SuppressWarnings("unused")
   public ListRecyclerAdapter() {
     this.data = Collections.unmodifiableList(new ArrayList<D>());
   }

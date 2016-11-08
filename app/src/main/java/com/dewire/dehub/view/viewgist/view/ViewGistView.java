@@ -21,7 +21,7 @@ import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(ViewGistPresenter.class)
 public class ViewGistView extends BaseSupportFragment<ViewGistPresenter>
-    implements ViewGistContract.View {
+    implements ViewGistContract {
 
   //===----------------------------------------------------------------------===//
   // View contract

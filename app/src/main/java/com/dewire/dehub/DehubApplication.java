@@ -3,15 +3,12 @@ package com.dewire.dehub;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.model.AppModule;
 import com.dewire.dehub.model.DaggerAppComponent;
 import com.dewire.dehub.model.NetModule;
-import com.dewire.dehub.view.AppActivity;
 import com.dewire.dehub.view.Navigation;
 import com.dewire.dehub.view.Navigator;
 import com.dewire.dehub.view.util.ActivityLifecyleCallbacksAdapter;
@@ -31,11 +28,12 @@ public class DehubApplication extends Application {
 
   private AppComponent appComponent;
 
-  public AppComponent getAppComponent() {
+  private AppComponent getAppComponent() {
     return appComponent;
   }
 
-  @Inject Navigation navigation;
+  @Inject
+  Navigation navigation;
 
   @Override
   public void onCreate() {

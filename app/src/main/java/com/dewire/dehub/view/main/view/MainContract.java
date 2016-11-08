@@ -9,10 +9,7 @@ import java.util.List;
  */
 
 public interface MainContract {
+  void displayGists(List<GistEntity> gists);
 
-  interface View {
-    void displayGists(List<GistEntity> gists);
-
-    void stopRefreshing();
-  }
+  void stopRefreshing();
 }

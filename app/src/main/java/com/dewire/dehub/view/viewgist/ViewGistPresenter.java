@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * Created by kl on 03/11/16.
  */
 
-public class ViewGistPresenter extends BasePresenter<ViewGistContract.View> {
+public class ViewGistPresenter extends BasePresenter<ViewGistContract> {
 
   @Inject GistApi api;
 
@@ -33,10 +33,7 @@ public class ViewGistPresenter extends BasePresenter<ViewGistContract.View> {
     String url = entity.file().getValue().raw_url();
 
     spin(api.get(url)).subscribe(LifeObserver.create(this,
-        gistText -> {
-          view().setGistText(gistText);
-        }, error -> {
-          Log.e("VIEW GIST", "failed");
-        }));
+        gistText -> view().setGistText(gistText),
+        error -> Log.e("VIEW GIST", "failed")));
   }
 }

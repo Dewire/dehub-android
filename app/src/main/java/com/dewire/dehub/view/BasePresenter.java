@@ -24,7 +24,8 @@ public abstract class BasePresenter<V> extends Presenter<V> {
 
   private static final String TAG = "BasePresenter";
 
-  @Inject protected RefWatcher refWatcher;
+  @Inject
+  RefWatcher refWatcher;
 
   public RefWatcher getRefWatcher() {
     return refWatcher;
@@ -139,6 +140,7 @@ public abstract class BasePresenter<V> extends Presenter<V> {
    *     value for the key.
    * @throws ClassCastException if the value for the key was of the wrong type.
    */
+  @SuppressWarnings("SameParameterValue")
   protected <T> T getParcelable(Bundle bundle, String key) {
     Object data = checkNotNull(bundle.getParcelable(key),
         "tried to get parcelable for key " + key + " but was null");

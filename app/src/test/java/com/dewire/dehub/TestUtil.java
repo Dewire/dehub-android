@@ -1,8 +1,6 @@
 package com.dewire.dehub;
 
 import com.dewire.dehub.view.BasePresenter;
-import com.dewire.dehub.view.login.LoginPresenter;
-import com.dewire.dehub.view.login.view.LoginContract;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.lang.reflect.Field;
@@ -18,6 +16,7 @@ public class TestUtil {
     setField("view", Presenter.class, presenter, view);
   }
 
+  @SuppressWarnings("SameParameterValue")
   public static void setRefWatcher(BasePresenter presenter, RefWatcher watcher) {
     setField("refWatcher", BasePresenter.class, presenter, watcher);
   }

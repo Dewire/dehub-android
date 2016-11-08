@@ -35,7 +35,7 @@ import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(MainPresenter.class)
 public class MainView extends BaseSupportFragment<MainPresenter>
-    implements MainContract.View {
+    implements MainContract {
 
   //===----------------------------------------------------------------------===//
   // View contract
@@ -62,9 +62,7 @@ public class MainView extends BaseSupportFragment<MainPresenter>
 
   private Adapter createAdapter() {
     Adapter adapter = new Adapter();
-    adapter.setOnItemClickListener((position, data) -> {
-      getPresenter().onActionViewGist(data);
-    });
+    adapter.setOnItemClickListener((position, data) -> getPresenter().onActionViewGist(data));
     return adapter;
   }
 
@@ -130,8 +128,8 @@ public class MainView extends BaseSupportFragment<MainPresenter>
 
   private static class ViewHolder extends RecyclerView.ViewHolder {
 
-    TextView name;
-    TextView language;
+    final TextView name;
+    final TextView language;
 
     public ViewHolder(View itemView) {
       super(itemView);
