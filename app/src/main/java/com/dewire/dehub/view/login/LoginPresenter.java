@@ -40,7 +40,7 @@ public class LoginPresenter extends BasePresenter<LoginContract> {
   private void tryLogin(String usernameText, String passwordText) {
     view().enableLoginButton(false);
 
-    spin(api.login(usernameText, passwordText)).subscribe(LifeObserver.create(this,
+    spinError(api.login(usernameText, passwordText)).subscribe(LifeObserver.create(this,
         v -> {
           Log.d("LOGIN", "ok");
           view().starAppActivity();

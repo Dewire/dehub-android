@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import butterknife.ButterKnife;
 
+import com.dewire.dehub.util.ErrorIndicator;
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.dewire.dehub.view.util.Views;
 
@@ -27,10 +28,11 @@ import nucleus.view.NucleusAppCompatActivity;
  */
 
 public abstract class BaseAppCompatActivity<P extends BasePresenter>
-    extends NucleusAppCompatActivity<P> implements LoadingIndicator {
+    extends NucleusAppCompatActivity<P> implements LoadingIndicator, ErrorIndicator {
 
   private static final String IS_SPINNING = "IS_SPINNING";
 
+  private FrameLayout contentView;
   private ProgressBar loadingIndicator;
 
   @CallSuper
@@ -52,7 +54,7 @@ public abstract class BaseAppCompatActivity<P extends BasePresenter>
   }
 
   private void setupViews() {
-    FrameLayout contentView = (FrameLayout)findViewById(android.R.id.content);
+    contentView = (FrameLayout)findViewById(android.R.id.content);
     checkNotNull(contentView,
         "contentView is null. Subclass must call setContentView() in onCreate()");
 
@@ -109,6 +111,11 @@ public abstract class BaseAppCompatActivity<P extends BasePresenter>
     getSupportFragmentManager().beginTransaction()
         .add(fragId, frag)
         .commit();
+  }
+
+  @Override
+  public void showErrorIndicator(Throwable error) {
+    Views.makeErrorSnackbar(contentView).show();
   }
 }
 

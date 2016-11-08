@@ -1,9 +1,13 @@
 package com.dewire.dehub.view.util;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.dewire.dehub.R;
 
 /**
  * Created by kl on 28/10/16.
@@ -34,4 +38,11 @@ public final class Views {
     }
   }
 
+  /**
+   * Returns a snackbar that is used to display for example network errors.
+   * @param view the view that the snackbar should be associated with
+   */
+  public static Snackbar makeErrorSnackbar(View view) {
+    return Snackbar.make(view, R.string.error_message_generic, Snackbar.LENGTH_LONG);
+  }
 }

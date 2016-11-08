@@ -64,7 +64,7 @@ public final class State {
 
   // State
 
-  final BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
+  BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
 
   public Observable<List<GistEntity>> gists() {
     return gists;

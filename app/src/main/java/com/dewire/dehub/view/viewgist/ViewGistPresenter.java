@@ -32,7 +32,7 @@ public class ViewGistPresenter extends BasePresenter<ViewGistContract> {
     GistEntity entity = getParcelable(arguments, ViewGistView.GIST_ENTITY_KEY);
     String url = entity.file().getValue().raw_url();
 
-    spin(api.get(url)).subscribe(LifeObserver.create(this,
+    spinError(api.get(url)).subscribe(LifeObserver.create(this,
         gistText -> view().setGistText(gistText),
         error -> Log.e("VIEW GIST", "failed")));
   }

@@ -11,6 +11,7 @@ import static org.mockito.Mockito.withSettings;
 
 import com.dewire.dehub.BaseTest;
 import com.dewire.dehub.model.GistApi;
+import com.dewire.dehub.util.ErrorIndicator;
 import com.dewire.dehub.view.login.view.LoginContract;
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.squareup.leakcanary.RefWatcher;
@@ -44,7 +45,7 @@ public class LoginTest extends BaseTest {
 
   private LoginContract makeViewMock() {
     LoginContract view = mock(LoginContract.class,
-        withSettings().extraInterfaces(LoadingIndicator.class));
+        withSettings().extraInterfaces(LoadingIndicator.class, ErrorIndicator.class));
 
     when(view.usernameText()).thenReturn(Observable.just(""));
     when(view.passwordText()).thenReturn(Observable.just(""));

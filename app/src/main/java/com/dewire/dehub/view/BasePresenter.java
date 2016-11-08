@@ -5,11 +5,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.util.CompletionObserver;
+import com.dewire.dehub.util.ErrorIndicator;
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -107,11 +109,28 @@ public abstract class BasePresenter<V> extends Presenter<V> {
   }
 
   /**
-   * Calls the showLoadingIndicator() on the view and hideLoadingIndicator() when the
-   * observable finishes (completed or error). This method first calls publish().autoConnect(2)
-   * on the observable, subscribes to it, and then returns the ConnectableObservable.
+   * Publishes and subscribes to the given observable doing the equivalent of
+   * error(spin(observable)).
+   */
+  protected <T> Observable<T> spinError(Observable<T> observable) {
+    Observable<T> published = observable.publish().autoConnect(3);
+    observeSpin(published);
+    observeError(published);
+    return published;
+  }
+
+  /**
+   * Publishes and subscribes to the given observable and calls showLoadingIndicator()
+   * on the view and hideLoadingIndicator() when the observable finishes (completed or error).
+   * @return the published observable
    */
   protected <T> Observable<T> spin(Observable<T> observable) {
+    Observable<T> published = observable.publish().autoConnect(2);
+    observeSpin(published);
+    return published;
+  }
+
+  private void observeSpin(Observable<?> observable) {
     if (!(view() instanceof LoadingIndicator)) {
       throw new RuntimeException("spin() called but view did not implement LoadingIndicator");
     }
@@ -121,17 +140,37 @@ public abstract class BasePresenter<V> extends Presenter<V> {
     }
     activeSpinnerRequests += 1;
 
-    Observable<T> published = observable.publish().autoConnect(2);
-
-    published.subscribe(CompletionObserver.create(() -> {
+    observable.subscribe(CompletionObserver.create(() -> {
       activeSpinnerRequests -= 1;
-      if (getView() ==  null || activeSpinnerRequests > 0) {
-        return;
+      if (getView() != null && activeSpinnerRequests == 0) {
+        ((LoadingIndicator)getView()).hideLoadingIndicator();
       }
-      ((LoadingIndicator)getView()).hideLoadingIndicator();
     }));
+  }
 
+  /**
+   * Publishes and subscribes to the given observable and calls the showErrorIndicator()
+   * on the view if the given observable throws an error.
+   * @return the published observable
+   */
+  protected <T> Observable<T> error(Observable<T> observable) {
+    Observable<T> published = observable.publish().autoConnect(2);
+    observeError(published);
     return published;
+  }
+
+  private void observeError(Observable<?> observable) {
+    if (!(view() instanceof ErrorIndicator)) {
+      throw new RuntimeException("error() called but view did not implement ErrorIndicator");
+    }
+
+    observable.subscribe(
+        t -> { },
+        error -> {
+          if (getView() != null) {
+            ((ErrorIndicator)getView()).showErrorIndicator(error);
+          }
+        });
   }
 
   /**

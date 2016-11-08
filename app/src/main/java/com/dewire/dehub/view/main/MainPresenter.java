@@ -34,7 +34,7 @@ public class MainPresenter extends BasePresenter<MainContract> {
   }
 
   public void onRefresh() {
-    api.loadGists().subscribe(LifeObserver.create(this, () -> view().stopRefreshing()));
+    error(api.loadGists()).subscribe(LifeObserver.create(this, () -> view().stopRefreshing()));
   }
 
   //===----------------------------------------------------------------------===//
@@ -58,7 +58,7 @@ public class MainPresenter extends BasePresenter<MainContract> {
   @Override
   protected void onSubscribe(@Nullable Bundle arguments) {
     if (!State.hasData(state.gists())) {
-      spin(api.loadGists()).subscribe();
+      spinError(api.loadGists()).subscribe();
     }
 
     life(state.gists().subscribe(view()::displayGists));

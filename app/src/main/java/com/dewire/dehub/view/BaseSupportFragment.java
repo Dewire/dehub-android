@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,6 +16,8 @@ import android.widget.ProgressBar;
 
 import butterknife.ButterKnife;
 
+import com.dewire.dehub.R;
+import com.dewire.dehub.util.ErrorIndicator;
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.dewire.dehub.view.util.Views;
 import com.squareup.leakcanary.RefWatcher;
@@ -26,7 +29,7 @@ import nucleus.view.NucleusSupportFragment;
  */
 
 public class BaseSupportFragment<P extends BasePresenter>
-    extends NucleusSupportFragment<P> implements LoadingIndicator {
+    extends NucleusSupportFragment<P> implements LoadingIndicator, ErrorIndicator {
 
   private static final String IS_SPINNING = "IS_SPINNING";
 
@@ -107,6 +110,12 @@ public class BaseSupportFragment<P extends BasePresenter>
   public void hideLoadingIndicator() {
     Log.d("DEBUG", "STOP SPINNING");
     loadingIndicator.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void showErrorIndicator(Throwable error) {
+    checkNotNull(getView());
+    Views.makeErrorSnackbar(getView()).show();
   }
 }
 

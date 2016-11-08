@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'checkstyle'
 
-//noinspection GroovyMissingReturnStatement
 android {
     compileSdkVersion 25
     buildToolsVersion "24.0.2"
@@ -38,7 +37,8 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def lintTask = tasks["lint${variant.name.capitalize()}"]
-            output.assemble.dependsOn lintTask
+            def testTask = tasks["test${variant.name.capitalize()}UnitTest"]
+            output.assemble.dependsOn lintTask, testTask
         }
     }
 }
@@ -50,6 +50,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.powermock:powermock-api-mockito:1.6.6'
     testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.6'

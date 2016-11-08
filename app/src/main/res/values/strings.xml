@@ -1,8 +1,12 @@
 <resources>
   <string name="app_name">DeHub</string>
   <string name="login">Login</string>
-  <string name="username">usernamez</string>
+  <string name="username">username</string>
   <string name="password">password</string>
   <string name="action_logout">Logga ut</string>
   <string name="add_new_gist_menu">New Gist</string>
+  <string name="error_message_generic">Ett fel inträffade. Var god försök igen senare.</string>
+  <string name="titel">Titel</string>
+  <string name="text">Text</string>
+  <string name="save_new_gist_menu">Spara Gist</string>
 </resources>
