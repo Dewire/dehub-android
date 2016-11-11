@@ -54,7 +54,7 @@ public class GistApi {
   /**
    * Downloads an URL. The server response content type must be text/plain.
    * @param url gets the URL.
-   * @return an Observable String of the URL's body.
+   * @return an Observable String of the URL's bodyText.
    */
   public Observable<String> get(String url) {
     return networkObservable(api.get(url));

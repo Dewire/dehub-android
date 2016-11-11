@@ -8,7 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,7 +18,6 @@ import android.widget.ProgressBar;
 
 import butterknife.ButterKnife;
 
-import com.dewire.dehub.R;
 import com.dewire.dehub.util.ErrorIndicator;
 import com.dewire.dehub.view.util.LoadingIndicator;
 import com.dewire.dehub.view.util.Views;
@@ -116,6 +117,18 @@ public class BaseSupportFragment<P extends BasePresenter>
   public void showErrorIndicator(Throwable error) {
     checkNotNull(getView());
     Views.makeErrorSnackbar(getView()).show();
+  }
+
+  /**
+   * Returns the toolbar that is associated with the fragments activity.
+   * @throws NullPointerException if the activity does not have a toolbar.
+   */
+  protected Toolbar getToolbar() {
+    AppCompatActivity activity = (AppCompatActivity)getActivity();
+    ActionBar actionBar = checkNotNull(activity.getSupportActionBar(),
+        "Tried to get Toolbar but the Activity did not have an ActionBar");
+
+    return (Toolbar)actionBar.getCustomView();
   }
 }
 

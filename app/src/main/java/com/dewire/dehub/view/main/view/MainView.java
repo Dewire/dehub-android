@@ -88,7 +88,7 @@ public class MainView extends BaseSupportFragment<MainPresenter>
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.new_gist) {
+    if (item.getItemId() == R.id.save_gist) {
       getPresenter().onActionNewGist();
       return true;
     }
