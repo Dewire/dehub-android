@@ -1,5 +1,9 @@
 package com.dewire.dehub.model;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.dewire.dehub.model.entity.GistEntity;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -74,6 +78,16 @@ public final class State {
 
   public Observable<ImmutableList<GistEntity>> gists() {
     return gists;
+  }
+
+  private static final String AUTH_KEY = "AUTH_KEY";
+
+  public void restoreState(Bundle savedState) {
+    basicAuth = savedState.getString(AUTH_KEY, "");
+  }
+
+  public void saveState(Bundle state) {
+    state.putString(AUTH_KEY, basicAuth);
   }
 }
 

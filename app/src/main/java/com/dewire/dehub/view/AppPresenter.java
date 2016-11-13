@@ -1,5 +1,9 @@
 package com.dewire.dehub.view;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
 import com.dewire.dehub.model.AppComponent;
 import com.dewire.dehub.model.State;
 
@@ -22,6 +26,20 @@ public class AppPresenter extends BasePresenter<AppActivity> {
   @Override
   protected void onInject(AppComponent component) {
     component.inject(this);
+  }
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedState) {
+    super.onCreate(savedState);
+    if (savedState != null) {
+      state.restoreState(savedState);
+    }
+  }
+
+  @Override
+  protected void onSave(Bundle state) {
+    super.onSave(state);
+    this.state.saveState(state);
   }
 }
 
