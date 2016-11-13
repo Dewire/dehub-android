@@ -9,4 +9,5 @@
   <string name="titel">Titel</string>
   <string name="text">Text</string>
   <string name="save_new_gist_menu">Spara Gist</string>
+  <string name="gist_created">Gist skapat</string>
 </resources>

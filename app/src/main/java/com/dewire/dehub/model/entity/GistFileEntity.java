@@ -4,8 +4,8 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 /**
  * Created by kl on 31/10/16.
@@ -24,7 +24,7 @@ public abstract class GistFileEntity implements Parcelable {
 
   @Nullable public abstract String language();
 
-  public static JsonAdapter<GistFileEntity> jsonAdapter(Moshi moshi) {
-    return new AutoValue_GistFileEntity.MoshiJsonAdapter(moshi);
+  public static TypeAdapter<GistFileEntity> typeAdapter(Gson gson) {
+    return new AutoValue_GistFileEntity.GsonTypeAdapter(gson);
   }
 }

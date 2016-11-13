@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -61,7 +60,27 @@ public abstract class BasePresenter<V> extends Presenter<V> {
   @Override
   protected void onTakeView(V view) {
     Log.d(TAG, debug("onTakeView()") + " : id " + view.hashCode());
-    Log.d(TAG, "PRESENTER: " + hashCode());
+
+    if (shouldCallOnSubscribeFromOnTakeView(view)) {
+      onSubscribe(getViewArguments(view));
+    }
+  }
+
+  // This is needed because for some stupid reason Android calls onCreateOptionsMenu
+  // after onResume. This is not good because onSubscribe likely depends on the options menu
+  // being created in order to observe it. So if the view is a fragment with an options menu
+  // we call onSubscribe once the menu has been created.
+  private boolean shouldCallOnSubscribeFromOnTakeView(V view) {
+    if (!(view instanceof BaseSupportFragment)) {
+      return true;
+    }
+
+    BaseSupportFragment fragment = (BaseSupportFragment)view;
+    return !fragment.hasOptionsMenu() || fragment.hasCreatedOptionsMenu();
+  }
+
+  // This is called by the BaseSupportFragment.
+  final void onOptionsMenuCreated(V view) {
     onSubscribe(getViewArguments(view));
   }
 

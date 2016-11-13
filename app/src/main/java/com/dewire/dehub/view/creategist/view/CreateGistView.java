@@ -2,7 +2,7 @@ package com.dewire.dehub.view.creategist.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +16,9 @@ import butterknife.BindView;
 import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
 import com.dewire.dehub.view.creategist.CreateGistPresenter;
-import com.jakewharton.rxbinding.support.v7.widget.RxToolbar;
+import com.dewire.dehub.view.util.Views;
+import com.jakewharton.rxbinding.view.RxMenuItem;
 import com.jakewharton.rxbinding.widget.RxTextView;
-
-import javax.inject.Inject;
 
 import nucleus.factory.RequiresPresenter;
 import rx.Observable;
@@ -47,9 +46,19 @@ public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
   }
 
   @Override
-  public Observable<MenuItem> saveClick() {
-    return RxToolbar.itemClicks(getToolbar())
-        .filter(menuItem -> menuItem.getItemId() == R.id.save_gist);
+  public Observable<Void> saveClick() {
+    return RxMenuItem.clicks(saveMenuItem);
+  }
+
+  @Override
+  public void enableSaveButton(Boolean enabled) {
+    Views.setEnabledMenuItem(saveMenuItem, enabled);
+  }
+
+  @Override
+  public void showGistCreatedSuccessfully() {
+    //noinspection ConstantConditions
+    Snackbar.make(this.getView(), R.string.gist_created, Snackbar.LENGTH_LONG).show();
   }
 
   //===----------------------------------------------------------------------===//
@@ -76,8 +85,14 @@ public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
   }
 
   @Override
+  public void onPrepareOptionsMenu(Menu menu) {
+    super.onPrepareOptionsMenu(menu);
+  }
+
+  @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.fragment_create_menu, menu);
+    saveMenuItem = menu.findItem(R.id.save_gist);
   }
 
 }

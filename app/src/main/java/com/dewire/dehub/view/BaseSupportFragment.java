@@ -8,10 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -37,6 +35,12 @@ public class BaseSupportFragment<P extends BasePresenter>
   private RefWatcher refWatcher;
 
   private ProgressBar loadingIndicator;
+
+  private boolean optionsMenuCreated = false;
+
+  public boolean hasCreatedOptionsMenu() {
+    return optionsMenuCreated;
+  }
 
   @CallSuper
   @Override
@@ -101,6 +105,18 @@ public class BaseSupportFragment<P extends BasePresenter>
     }
   }
 
+  @CallSuper
+  @Override
+  public void onPrepareOptionsMenu(Menu menu) {
+    super.onPrepareOptionsMenu(menu);
+    if (!optionsMenuCreated) {
+      P presenter = checkNotNull(getPresenter());
+      //noinspection unchecked
+      presenter.onOptionsMenuCreated(this);
+      optionsMenuCreated = true;
+    }
+  }
+
   @Override
   public void showLoadingIndicator() {
     Log.d("DEBUG", "SPINNING");
@@ -117,18 +133,6 @@ public class BaseSupportFragment<P extends BasePresenter>
   public void showErrorIndicator(Throwable error) {
     checkNotNull(getView());
     Views.makeErrorSnackbar(getView()).show();
-  }
-
-  /**
-   * Returns the toolbar that is associated with the fragments activity.
-   * @throws NullPointerException if the activity does not have a toolbar.
-   */
-  protected Toolbar getToolbar() {
-    AppCompatActivity activity = (AppCompatActivity)getActivity();
-    ActionBar actionBar = checkNotNull(activity.getSupportActionBar(),
-        "Tried to get Toolbar but the Activity did not have an ActionBar");
-
-    return (Toolbar)actionBar.getCustomView();
   }
 }
 

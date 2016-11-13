@@ -14,6 +14,10 @@ public interface CreateGistContract {
 
   Observable<CharSequence> bodyText();
 
-  Observable<MenuItem> saveClick();
+  Observable<Void> saveClick();
+
+  void enableSaveButton(Boolean enabled);
+
+  void showGistCreatedSuccessfully();
 }
 

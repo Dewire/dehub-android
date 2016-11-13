@@ -1,10 +1,16 @@
 package com.dewire.dehub.model;
 
 import com.dewire.dehub.model.entity.GistEntity;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Longs;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.Credentials;
@@ -64,9 +70,9 @@ public final class State {
 
   // State
 
-  BehaviorSubject<List<GistEntity>> gists = BehaviorSubject.create();
+  BehaviorSubject<ImmutableList<GistEntity>> gists = BehaviorSubject.create();
 
-  public Observable<List<GistEntity>> gists() {
+  public Observable<ImmutableList<GistEntity>> gists() {
     return gists;
   }
 }

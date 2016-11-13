@@ -5,18 +5,19 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.dewire.dehub.BuildConfig;
-import com.squareup.moshi.Moshi;
+import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import dagger.Module;
 import dagger.Provides;
-
 import javax.inject.Singleton;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.moshi.MoshiConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.schedulers.Schedulers;
 
@@ -42,10 +43,11 @@ public class NetModule {
 
   @Provides
   @Singleton
-  Moshi moshi() {
-    return new Moshi.Builder()
-        .add(AdapterFactory.create())
-        .build();
+  Gson gson() {
+    return new GsonBuilder()
+        .registerTypeAdapter(ImmutableList.class, new ImmutableListDeserializer())
+        .registerTypeAdapterFactory(AdapterFactory.create())
+        .create();
   }
 
   @Provides
@@ -72,13 +74,13 @@ public class NetModule {
 
   @Provides
   @Singleton
-  Retrofit retrofit(OkHttpClient client, Moshi moshi) {
+  Retrofit retrofit(OkHttpClient client, Gson gson) {
     return new Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(client)
         .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
         .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build();
   }
 }

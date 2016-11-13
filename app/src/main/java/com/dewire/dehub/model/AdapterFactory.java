@@ -1,18 +1,19 @@
 package com.dewire.dehub.model;
 
-import com.ryanharter.auto.value.moshi.MoshiAdapterFactory;
-import com.squareup.moshi.JsonAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.ryanharter.auto.value.gson.GsonTypeAdapterFactory;
 
 /**
- * Created by kl on 13/10/16.
+ * Created by kl on 11/13/16.
  */
 
-@MoshiAdapterFactory
-abstract class AdapterFactory implements JsonAdapter.Factory {
+@GsonTypeAdapterFactory
+public abstract class AdapterFactory implements TypeAdapterFactory {
 
   // Static factory method to access the package
   // private generated implementation
-  public static JsonAdapter.Factory create() {
-    return new AutoValueMoshi_AdapterFactory();
+  public static TypeAdapterFactory create() {
+    return new AutoValueGson_AdapterFactory();
   }
+
 }

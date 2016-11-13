@@ -2,11 +2,18 @@ package com.dewire.dehub.view.creategist;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.dewire.dehub.model.AppComponent;
+import com.dewire.dehub.model.GistApi;
+import com.dewire.dehub.model.entity.CreateGistEntity;
+import com.dewire.dehub.model.entity.CreateGistFileEntity;
+import com.dewire.dehub.util.LifeObserver;
 import com.dewire.dehub.util.Tuple;
 import com.dewire.dehub.view.BasePresenter;
 import com.dewire.dehub.view.creategist.view.CreateGistContract;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -15,6 +22,8 @@ import rx.Observable;
  */
 
 public class CreateGistPresenter extends BasePresenter<CreateGistContract> {
+
+  @Inject GistApi api;
 
   @Override
   protected void onInject(AppComponent component) {
@@ -30,13 +39,21 @@ public class CreateGistPresenter extends BasePresenter<CreateGistContract> {
         view().bodyText().map(CharSequence::toString),
         Tuple::create);
 
+    life(titleBody
+        .map(tb -> !tb.first().isEmpty() && !tb.second().isEmpty())
+        .subscribe(enabled -> view().enableSaveButton(enabled)));
 
+    life(view().saveClick()
+        .withLatestFrom(titleBody, (click, texts) -> texts)
+        .subscribe(this::saveGist));
+  }
 
+  private void saveGist(Tuple<String> texts) {
+    CreateGistEntity entity = CreateGistEntity.create(
+        texts.first(), texts.first(), true, CreateGistFileEntity.create(texts.second()));
 
-
-
-
-
+    spinError(api.postGist(entity)).subscribe(LifeObserver.create(this,
+        gistEntity -> view().showGistCreatedSuccessfully()));
   }
 }
 

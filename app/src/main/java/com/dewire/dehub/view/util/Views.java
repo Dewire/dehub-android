@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -44,5 +45,32 @@ public final class Views {
    */
   public static Snackbar makeErrorSnackbar(View view) {
     return Snackbar.make(view, R.string.error_message_generic, Snackbar.LENGTH_LONG);
+  }
+
+  /**
+   * Enables the MenuItem and sets its alpha to 255.
+   */
+  public static void enableMenuItem(MenuItem menuItem) {
+    menuItem.setEnabled(true);
+    menuItem.getIcon().setAlpha(255);
+  }
+
+  /**
+   * Disabled the MenuItem and decreases its alpha so that it is greyed out.
+   */
+  public static void disableMenuItem(MenuItem menuItem) {
+    menuItem.setEnabled(false);
+    menuItem.getIcon().setAlpha(100);
+  }
+
+  /**
+   * Disabled and greys out or enables the MenuItem.
+   */
+  public static void setEnabledMenuItem(MenuItem menuItem, Boolean enabled) {
+    if (enabled) {
+      enableMenuItem(menuItem);
+    } else {
+      disableMenuItem(menuItem);
+    }
   }
 }

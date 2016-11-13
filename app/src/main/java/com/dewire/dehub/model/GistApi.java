@@ -2,17 +2,29 @@ package com.dewire.dehub.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.dewire.dehub.DebugUtil;
+import com.dewire.dehub.model.entity.CreateGistEntity;
 import com.dewire.dehub.model.entity.GistEntity;
+import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Retrofit;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Url;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 public class GistApi {
@@ -20,10 +32,7 @@ public class GistApi {
   private final State state;
   private final RetrofitApi api;
 
-  GistApi(State state, Retrofit retrofit) {
-    checkNotNull(state);
-    checkNotNull(retrofit);
-
+  GistApi(@NonNull State state, @NonNull Retrofit retrofit) {
     this.state = state;
     api = retrofit.create(RetrofitApi.class);
   }
@@ -37,18 +46,13 @@ public class GistApi {
     return connect(api.getGists(), state.gists);
   }
 
-  private <T> Observable<Void> connect(Observable<T> observable, BehaviorSubject<T> stateSubject) {
-    BehaviorSubject<Void> statusSubject = BehaviorSubject.create();
-
-    networkObservable(observable).subscribe(
-        data -> {
-          stateSubject.onNext(data);
-          statusSubject.onNext(null);
-        },
-        statusSubject::onError,
-        statusSubject::onCompleted);
-
-    return statusSubject;
+  /**
+   * Creates a new gist.
+   * @param gistEntity the gist to create
+   * @return an Observable that indicates the success or failure of the post.
+   */
+  public Observable<Void> postGist(CreateGistEntity gistEntity) {
+    return connectElement(api.postGist(gistEntity), state.gists, Orderings.gistsOrdering);
   }
 
   /**
@@ -60,20 +64,74 @@ public class GistApi {
     return networkObservable(api.get(url));
   }
 
-  // A helper method to configure common options that should apply for all network
-  // request observables.
-  private <T> Observable<T> networkObservable(Observable<T> observable) {
-    return observable.observeOn(AndroidSchedulers.mainThread())
-        .doOnError(e -> Log.e("NetworkRequest", e.toString()));
-  }
+  //===----------------------------------------------------------------------===//
+  // Retrofit interface
+  //===----------------------------------------------------------------------===//
 
   private interface RetrofitApi {
 
     @GET("gists")
-    Observable<List<GistEntity>> getGists();
+    Observable<ImmutableList<GistEntity>> getGists();
+
+    @POST("gists")
+    Observable<GistEntity> postGist(@Body CreateGistEntity gistEntity);
 
     @GET
     Observable<String> get(@Url String url);
+  }
+
+  //===----------------------------------------------------------------------===//
+  // Helper methods
+  //===----------------------------------------------------------------------===//
+
+  private <T> Observable<Void> connect(Observable<T> observable, BehaviorSubject<T> state) {
+    return connectObservable(observable, state, data -> data);
+  }
+
+  private <T> Observable<Void> connectElement(Observable<T> observable,
+                                              BehaviorSubject<ImmutableList<T>> state,
+                                              @Nullable Ordering<T> ordering) {
+
+    return connectObservable(observable, state, data -> {
+      if (state.getValue() == null) {
+        return ImmutableList.of(data);
+      }
+
+      ImmutableList<T> newList = new ImmutableList.Builder<T>()
+          .addAll(state.getValue())
+          .add(data)
+          .build();
+
+      if (ordering != null) {
+        return ordering.immutableSortedCopy(newList);
+      } else {
+        return newList;
+      }
+    });
+  }
+
+  private <T, U> Observable<Void> connectObservable(Observable<T> observable,
+                                                    BehaviorSubject<U> state,
+                                                    Func1<T, U> dataToState) {
+
+    BehaviorSubject<Void> statusSubject = BehaviorSubject.create();
+
+    networkObservable(observable).subscribe(
+        data -> {
+          state.onNext(dataToState.call(data));
+          statusSubject.onNext(null);
+        },
+        statusSubject::onError,
+        statusSubject::onCompleted);
+
+    return statusSubject;
+  }
+
+  // A helper method to configure common options that should apply for all network
+  // request observables.
+  private <T> Observable<T> networkObservable(Observable<T> observable) {
+    return observable.observeOn(AndroidSchedulers.mainThread())
+        .doOnError(e -> Log.e("GistApi", Throwables.getStackTraceAsString(e)));
   }
 }
 

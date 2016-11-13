@@ -56,7 +56,7 @@ public class MainView extends BaseSupportFragment<MainPresenter>
   // Implementation
   //===----------------------------------------------------------------------===//
 
-  private static final java.lang.String SWIPE_REFRESHING = "SWIPE_REFRESHING";
+  private static final String SWIPE_REFRESHING = "SWIPE_REFRESHING";
 
   private final Adapter adapter = createAdapter();
 

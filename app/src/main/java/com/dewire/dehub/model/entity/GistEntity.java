@@ -3,9 +3,10 @@ package com.dewire.dehub.model.entity;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -20,9 +21,7 @@ public abstract class GistEntity implements Parcelable {
 
   public abstract Map<String, GistFileEntity> files();
 
-  public static JsonAdapter<GistEntity> jsonAdapter(Moshi moshi) {
-    return new AutoValue_GistEntity.MoshiJsonAdapter(moshi);
-  }
+  public abstract Date updated_at();
 
   /**
    * A gist may have many files. We only support getting a single file (which one is not defined).
@@ -36,6 +35,10 @@ public abstract class GistEntity implements Parcelable {
     } else {
       throw new IllegalStateException("GistEntity did not have any files!");
     }
+  }
+
+  public static TypeAdapter<GistEntity> typeAdapter(Gson gson) {
+    return new AutoValue_GistEntity.GsonTypeAdapter(gson);
   }
 }
 
