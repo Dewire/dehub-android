@@ -1,21 +1,14 @@
 package com.dewire.dehub.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.dewire.dehub.DebugUtil;
 import com.dewire.dehub.model.entity.CreateGistEntity;
 import com.dewire.dehub.model.entity.GistEntity;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
