@@ -26,13 +26,22 @@ import rx.subjects.BehaviorSubject;
  */
 
 public final class State {
-  private String basicAuth = "";
-  private final Iterable<Field> subjectFields = getSubjectFields();
 
-  private Iterable<Field> getSubjectFields() {
-    return Iterables.filter(Arrays.asList(getClass().getDeclaredFields()), field -> {
-      return field.getType().equals(BehaviorSubject.class);
-    });
+  private static final String AUTH_KEY = "AUTH_KEY";
+
+  private final Iterable<Field> subjectFields = Iterables.filter(
+      Arrays.asList(getClass().getDeclaredFields()), field -> {
+        return field.getType().equals(BehaviorSubject.class);
+      });
+
+  private String basicAuth = "";
+
+  String getBasicAuth() {
+    return basicAuth;
+  }
+
+  void setBasicAuth(String username, String password) {
+    basicAuth = Credentials.basic(username, password);
   }
 
   /**
@@ -48,14 +57,6 @@ public final class State {
     } catch (IllegalAccessException exception) {
       throw new RuntimeException(exception);
     }
-  }
-
-  String getBasicAuth() {
-    return basicAuth;
-  }
-
-  void setBasicAuth(String username, String password) {
-    basicAuth = Credentials.basic(username, password);
   }
 
   /**
@@ -79,8 +80,6 @@ public final class State {
   public Observable<ImmutableList<GistEntity>> gists() {
     return gists;
   }
-
-  private static final String AUTH_KEY = "AUTH_KEY";
 
   public void restoreState(Bundle savedState) {
     basicAuth = savedState.getString(AUTH_KEY, "");
