@@ -28,3 +28,30 @@ When the user first logs in, the app should fetch the users gists and display th
 6. The ``presenter`` listens to the ``state`` and receives a callback with the new data when it changes.
 7. The ``presenter`` forwards the list of gists to the ``view``.
 8. The ``view`` displays the list of gists on the screen.
+
+# Libraries used
+
+__RxJava__
+
+Used for observing the result of network requests (with Retrofit's RxJava adatper) and observing the UI state (with RxView).
+
+__Retrofit__
+
+A REST library
+
+__Nucleus__
+
+The Model-View-Presenter library. Nucleus enables the use of presenters for Activies, Fragments, and (Android) Views. It handles Android lifecyle issues such as when the user rotates the screen and makes sure that the presenter and view does not go out of sync.
+
+
+
+
+
+
+
+
+
+
+
+
+
