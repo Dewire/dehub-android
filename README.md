@@ -29,6 +29,20 @@ When the user first logs in, the app should fetch the users gists and display th
 7. The ``presenter`` forwards the list of gists to the ``view``.
 8. The ``view`` displays the list of gists on the screen.
 
+# Dealing with the Android lifecycle
+
+The app uses an Activity and displays different fragments depending on what screen the user is at in the app. The Fragments do not call ``setRetainInstanceState(true)`` which means that both the Activity and the Fragments will be destroyed and recreated on a configuration change (i.e. a screen rotation). This approach can lead to problems when we invovle asynconous operations such as a network request. Consider the following diagram:
+
+![alt tag](docs/lifecycle_network.png)
+
+The Fragment starts a network request with a callback that is called when the network request finishes. If there is a configuration change before the network request completes, the Fragment is destroyed when the callback is executed. This will either lead to a crash or that the data of the request is not displayed.
+
+The MVP library [Nucleus](https://github.com/konmik/nucleus) helps with solving this problem. Using the Nucleus model it is not the Fragment that initiates the network request with a callback. This is now the responsibility of the Presenter. The Presenter initiates the request, and inside of the callback it gets the current existing Fragment. If there was no configuration change, this will be the Fragment instance that existed when the Presenter initiated the request. If there was a configuration change this will be the newly created Fragment. So the callback will always access the active Fragment, and never an old, destroyed one.
+
+This works because Nucleus will not destroy a Presenter on a configuration change. Instead the Presenter will be notified that it's current Fragment is no longer active, and that a new Fragment has been created.
+
+You might think that this would lead to a race condition if the network request completes during a configuration change. However, this is not the case because all network callbacks are posted to the UI thread, and during a configuration change Android destroyes the old Fragment and creates a new one all within one message the UI thread. This means that the callback will either execute right before the Fragment is destroyed, or right after the new Fragment has been created. For more information see this [article](https://medium.com/square-corner-blog/a-journey-on-the-android-main-thread-lifecycle-bits-d916bc1ee6b2#.v2mcyfn10).
+
 # Libraries used
 
 __RxJava__
