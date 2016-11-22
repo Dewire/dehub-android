@@ -68,12 +68,12 @@ The Model-View-Presenter library. Nucleus enables the use of presenters for Acti
 __Learning resources:__
 * https://github.com/konmik/konmik.github.io/wiki/Introduction-to-Model-View-Presenter-on-Android - an intro of MVP and Nucleus.
 
+##[Dagger 2](https://github.com/google/dagger)##
 
+Dagger 2 is a depencency injection library that does not use any relection (which can be expensive on Android) and instead uses code generation. Dagger 2 is used to inject dependencies in to Presenters and various model classes such as the Retrofit API.
 
-
-
-
-
+__Learning resources:__
+* [Dependency Injection with Dagger 2](https://github.com/codepath/android_guides/wiki/Dependency-Injection-with-Dagger-2) - A good tutorial.
 
 
 
