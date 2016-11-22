@@ -31,7 +31,7 @@ When the user first logs in, the app should fetch the users gists and display th
 
 # Dealing with the Android lifecycle
 
-The app uses an Activity and displays different fragments depending on what screen the user is at in the app. The Fragments do not call ``setRetainInstanceState(true)`` which means that both the Activity and the Fragments will be destroyed and recreated on a configuration change (i.e. a screen rotation). This approach can lead to problems when we invovle asynconous operations such as a network request. Consider the following diagram:
+The app uses an Activity and displays different Fragments depending on what screen the user is at in the app. The Fragments do not call ``setRetainInstanceState(true)`` which means that both the Activity and the Fragments will be destroyed and recreated on a configuration change (i.e. a screen rotation). This approach can lead to problems when we invovle asynconous operations such as a network request. Consider the following diagram:
 
 ![alt tag](docs/lifecycle_network.png)
 
@@ -41,23 +41,32 @@ The MVP library [Nucleus](https://github.com/konmik/nucleus) helps with solving 
 
 This works because Nucleus will not destroy a Presenter on a configuration change. Instead the Presenter will be notified that it's current Fragment is no longer active, and that a new Fragment has been created.
 
-You might think that this would lead to a race condition if the network request completes during a configuration change. However, this is not the case because all network callbacks are posted to the UI thread, and during a configuration change Android destroyes the old Fragment and creates a new one all within one message the UI thread. This means that the callback will either execute right before the Fragment is destroyed, or right after the new Fragment has been created. For more information see this [article](https://medium.com/square-corner-blog/a-journey-on-the-android-main-thread-lifecycle-bits-d916bc1ee6b2#.v2mcyfn10).
+You might think that this would lead to a race condition if the network request completes during a configuration change. However, this is not the case because all network callbacks are posted to the UI thread, and during a configuration change Android destroys the old Fragment and creates a new one all within one message the UI thread. This means that the callback will either execute right before the Fragment is destroyed, or right after the new Fragment has been created. For more information see this [article](https://medium.com/square-corner-blog/a-journey-on-the-android-main-thread-lifecycle-bits-d916bc1ee6b2#.v2mcyfn10).
 
 # Libraries used
 
-__RxJava__
+##[RxJava](https://github.com/ReactiveX/RxJava)##
 
-Used for observing the result of network requests (with Retrofit's RxJava adatper) and observing the UI state (with RxView).
+Used for observing the result of network requests (with Retrofit's RxJava adapter) and observing the UI state (with RxView).
 
-__Retrofit__
+__Learning resources:__
+* [Grokking RxJava](http://blog.danlew.net/2014/09/15/grokking-rxjava-part-1/) - A good place to start learning.
+* [Common RxJava Mistakes](https://www.youtube.com/watch?v=QdmkXL7XikQ) - Watch this once you have some familiarity with RxJava. Then watch it again when you get more comfortable with RxJava.
+* [Reactive Programming with RxJava](http://shop.oreilly.com/product/0636920042228.do) - A good in-depth book on RxJava.
 
-A REST library
+##[Retrofit](https://github.com/square/retrofit)##
 
-__Nucleus__
+A REST library. Supports declaratively defining a REST API via an interface. Has adapters for common JSON parsing libraries (this app uses Gson) and an adapter for returning the result of a network request as an RxJava Observable.
+
+__Learning resources:__
+* https://square.github.io/retrofit/ - A high level tutorial.
+
+##[Nucleus](https://github.com/konmik/nucleus)##
 
 The Model-View-Presenter library. Nucleus enables the use of presenters for Activies, Fragments, and (Android) Views. It handles Android lifecyle issues such as when the user rotates the screen and makes sure that the presenter and view does not go out of sync.
 
-
+__Learning resources:__
+* https://github.com/konmik/konmik.github.io/wiki/Introduction-to-Model-View-Presenter-on-Android - an intro of MVP and Nucleus.
 
 
 
