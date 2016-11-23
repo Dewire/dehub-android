@@ -1,5 +1,10 @@
 # dehub-android
 
+## Synopsis
+
+dehub is an app that can be used to view your gists and to create new gists.
+It is written using a MVP-like architecture.
+
 A simplified overview of the app architecture:
 
 ![alt tag](docs/overview.png)
