@@ -48,7 +48,7 @@ This works because Nucleus will not destroy a Presenter on a configuration chang
 
 You might think that this would lead to a race condition if the network request completes during a configuration change. However, this is not the case because all network callbacks are posted to the UI thread, and during a configuration change Android destroys the old Fragment and creates a new one all within one message the UI thread. This means that the callback will either execute right before the Fragment is destroyed, or right after the new Fragment has been created. For more information see this [article](https://medium.com/square-corner-blog/a-journey-on-the-android-main-thread-lifecycle-bits-d916bc1ee6b2#.v2mcyfn10).
 
-# Libraries used
+# Main libraries used
 
 ##[RxJava](https://github.com/ReactiveX/RxJava)##
 
