@@ -326,7 +326,7 @@
     <inspection_tool class="CheckForOutOfMemoryOnLargeArrayAllocation" enabled="false" level="ERROR" enabled_by_default="false">
       <option name="m_limit" value="64" />
     </inspection_tool>
-    <inspection_tool class="CheckStyle" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="CheckStyle" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="CheckTagEmptyBody" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="CheckedExceptionClass" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="ClashingGetters" enabled="false" level="ERROR" enabled_by_default="false" />

@@ -20,7 +20,8 @@ import javax.inject.Inject;
 
 public class ViewGistPresenter extends BasePresenter<ViewGistContract> {
 
-  @Inject GistApi api;
+  @Inject
+  GistApi api;
 
   @Override
   protected void onInject(AppComponent component) {
@@ -32,8 +33,9 @@ public class ViewGistPresenter extends BasePresenter<ViewGistContract> {
     GistEntity entity = getParcelable(arguments, ViewGistView.GIST_ENTITY_KEY);
     String url = entity.file().getValue().raw_url();
 
-    spinError(api.get(url)).subscribe(LifeObserver.create(this,
-        gistText -> view().setGistText(gistText),
-        error -> Log.e("VIEW GIST", "failed")));
+    api.get(url).compose(spinError())
+        .subscribe(LifeObserver.create(this,
+            gistText -> view().setGistText(gistText),
+            error -> Log.e("VIEW GIST", "failed")));
   }
 }

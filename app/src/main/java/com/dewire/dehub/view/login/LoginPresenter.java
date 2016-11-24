@@ -17,7 +17,8 @@ import rx.Observable;
 
 public class LoginPresenter extends BasePresenter<LoginContract> {
 
-  @Inject GistApi api;
+  @Inject
+  GistApi api;
 
   @Override
   protected void onSubscribe(@Nullable Bundle arguments) {
@@ -40,6 +41,7 @@ public class LoginPresenter extends BasePresenter<LoginContract> {
   private void tryLogin(String usernameText, String passwordText) {
     view().enableLoginButton(false);
 
+    /*
     spinError(api.login(usernameText, passwordText)).subscribe(LifeObserver.create(this,
         v -> {
           Log.d("LOGIN", "ok");
@@ -49,6 +51,19 @@ public class LoginPresenter extends BasePresenter<LoginContract> {
           Log.e("LOGIN", "failed");
           view().enableLoginButton(true);
         }));
+        */
+
+    api.login(usernameText, passwordText)
+        .compose(spinError())
+        .subscribe(LifeObserver.create(this,
+            v -> {
+              Log.d("LOGIN", "ok");
+              view().starAppActivity();
+            },
+            error -> {
+              Log.e("LOGIN", "failed");
+              view().enableLoginButton(true);
+            }));
   }
 
   protected void onInject(AppComponent component) {

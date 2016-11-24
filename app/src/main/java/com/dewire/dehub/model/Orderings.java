@@ -11,7 +11,7 @@ import com.google.common.primitives.Longs;
 public final class Orderings {
   private Orderings() {}
 
-  public static final Ordering<GistEntity> gistsOrdering = new Ordering<GistEntity>() {
+  public static final Ordering<GistEntity> GISTS = new Ordering<GistEntity>() {
     @Override
     public int compare(GistEntity g1, GistEntity g2) {
       return Longs.compare(g2.updated_at().getTime(), g1.updated_at().getTime());

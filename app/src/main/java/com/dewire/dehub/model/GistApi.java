@@ -32,7 +32,8 @@ public class GistApi {
 
   public Observable<Void> login(String username, String password) {
     state.setBasicAuth(username, password);
-    return networkObservable(api.getGists()).map(v -> null);
+    return api.getGists().compose(network())
+        .map(v -> null);
   }
 
   public Observable<Void> loadGists() {
@@ -41,20 +42,22 @@ public class GistApi {
 
   /**
    * Creates a new gist.
+   *
    * @param gistEntity the gist to create
    * @return an Observable that indicates the success or failure of the post.
    */
   public Observable<Void> postGist(CreateGistEntity gistEntity) {
-    return connectElement(api.postGist(gistEntity), state.gists, Orderings.gistsOrdering);
+    return connectElement(api.postGist(gistEntity), state.gists, Orderings.GISTS);
   }
 
   /**
    * Downloads an URL. The server response content type must be text/plain.
+   *
    * @param url gets the URL.
    * @return an Observable String of the URL's bodyText.
    */
   public Observable<String> get(String url) {
-    return networkObservable(api.get(url));
+    return api.get(url).compose(network());
   }
 
   //===----------------------------------------------------------------------===//
@@ -109,7 +112,7 @@ public class GistApi {
 
     BehaviorSubject<Void> statusSubject = BehaviorSubject.create();
 
-    networkObservable(observable).subscribe(
+    observable.compose(network()).subscribe(
         data -> {
           state.onNext(dataToState.call(data));
           statusSubject.onNext(null);
@@ -122,8 +125,8 @@ public class GistApi {
 
   // A helper method to configure common options that should apply for all network
   // request observables.
-  private <T> Observable<T> networkObservable(Observable<T> observable) {
-    return observable.observeOn(AndroidSchedulers.mainThread())
+  private <T> Observable.Transformer<T, T> network() {
+    return observable -> observable.observeOn(AndroidSchedulers.mainThread())
         .doOnError(e -> Log.e("GistApi", Throwables.getStackTraceAsString(e)));
   }
 }

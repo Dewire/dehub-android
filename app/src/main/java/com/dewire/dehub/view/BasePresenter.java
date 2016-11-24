@@ -131,11 +131,13 @@ public abstract class BasePresenter<V> extends Presenter<V> {
    * Publishes and subscribes to the given observable doing the equivalent of
    * error(spin(observable)).
    */
-  protected <T> Observable<T> spinError(Observable<T> observable) {
-    Observable<T> published = observable.publish().autoConnect(3);
-    observeSpin(published);
-    observeError(published);
-    return published;
+  protected <T> Observable.Transformer<T, T> spinError() {
+    return observable -> {
+      Observable<T> published = observable.publish().autoConnect(3);
+      observeSpin(published);
+      observeError(published);
+      return published;
+    };
   }
 
   /**
@@ -143,10 +145,25 @@ public abstract class BasePresenter<V> extends Presenter<V> {
    * on the view and hideLoadingIndicator() when the observable finishes (completed or error).
    * @return the published observable
    */
-  protected <T> Observable<T> spin(Observable<T> observable) {
-    Observable<T> published = observable.publish().autoConnect(2);
-    observeSpin(published);
-    return published;
+  protected <T> Observable.Transformer<T, T> spin() {
+    return observable -> {
+      Observable<T> published = observable.publish().autoConnect(2);
+      observeSpin(published);
+      return published;
+    };
+  }
+
+  /**
+   * Publishes and subscribes to the given observable and calls the showErrorIndicator()
+   * on the view if the given observable throws an error.
+   * @return the published observable
+   */
+  protected <T> Observable.Transformer<T, T> error() {
+    return observable -> {
+      Observable<T> published = observable.publish().autoConnect(2);
+      observeError(published);
+      return published;
+    };
   }
 
   private void observeSpin(Observable<?> observable) {
@@ -154,7 +171,7 @@ public abstract class BasePresenter<V> extends Presenter<V> {
       throw new RuntimeException("spin() called but view did not implement LoadingIndicator");
     }
 
-    if (activeSpinnerRequests < 1) {
+    if (activeSpinnerRequests == 0) {
       ((LoadingIndicator)view()).showLoadingIndicator();
     }
     activeSpinnerRequests += 1;
@@ -165,17 +182,6 @@ public abstract class BasePresenter<V> extends Presenter<V> {
         ((LoadingIndicator)getView()).hideLoadingIndicator();
       }
     }));
-  }
-
-  /**
-   * Publishes and subscribes to the given observable and calls the showErrorIndicator()
-   * on the view if the given observable throws an error.
-   * @return the published observable
-   */
-  protected <T> Observable<T> error(Observable<T> observable) {
-    Observable<T> published = observable.publish().autoConnect(2);
-    observeError(published);
-    return published;
   }
 
   private void observeError(Observable<?> observable) {

@@ -23,7 +23,8 @@ import rx.Observable;
 
 public class CreateGistPresenter extends BasePresenter<CreateGistContract> {
 
-  @Inject GistApi api;
+  @Inject
+  GistApi api;
 
   @Override
   protected void onInject(AppComponent component) {
@@ -52,8 +53,10 @@ public class CreateGistPresenter extends BasePresenter<CreateGistContract> {
     CreateGistEntity entity = CreateGistEntity.create(
         texts.first(), texts.first(), true, CreateGistFileEntity.create(texts.second()));
 
-    spinError(api.postGist(entity)).subscribe(LifeObserver.create(this,
-        gistEntity -> view().showGistCreatedSuccessfully()));
+    api.postGist(entity)
+        .compose(spinError())
+        .subscribe(LifeObserver.create(this,
+            gistEntity -> view().showGistCreatedSuccessfully()));
   }
 }
 
