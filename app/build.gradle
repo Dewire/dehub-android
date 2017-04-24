@@ -7,7 +7,7 @@ apply from: "gradlescripts/dependencies.gradle"
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.dewire.dehub"
         minSdkVersion 21
