@@ -18,8 +18,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.Credentials;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Created by kl on 13/10/16.

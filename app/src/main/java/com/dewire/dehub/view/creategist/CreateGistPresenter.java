@@ -15,7 +15,7 @@ import com.dewire.dehub.view.creategist.view.CreateGistContract;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by kl on 01/11/16.

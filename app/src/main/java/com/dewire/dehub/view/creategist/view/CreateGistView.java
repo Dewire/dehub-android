@@ -17,11 +17,12 @@ import com.dewire.dehub.R;
 import com.dewire.dehub.view.BaseSupportFragment;
 import com.dewire.dehub.view.creategist.CreateGistPresenter;
 import com.dewire.dehub.view.util.Views;
-import com.jakewharton.rxbinding.view.RxMenuItem;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.InitialValueObservable;
+import com.jakewharton.rxbinding2.view.RxMenuItem;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import io.reactivex.Observable;
 import nucleus.factory.RequiresPresenter;
-import rx.Observable;
 
 /**
  * Created by kl on 01/11/16.
@@ -36,17 +37,17 @@ public class CreateGistView extends BaseSupportFragment<CreateGistPresenter>
   //===----------------------------------------------------------------------===//
 
   @Override
-  public Observable<CharSequence> titleText() {
+  public InitialValueObservable<CharSequence> titleText() {
     return RxTextView.textChanges(titleInput);
   }
 
   @Override
-  public Observable<CharSequence> bodyText() {
+  public InitialValueObservable<CharSequence> bodyText() {
     return RxTextView.textChanges(bodyInput);
   }
 
   @Override
-  public Observable<Void> saveClick() {
+  public Observable<Object> saveClick() {
     return RxMenuItem.clicks(saveMenuItem);
   }
 

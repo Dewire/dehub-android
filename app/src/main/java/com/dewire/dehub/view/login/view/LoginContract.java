@@ -1,6 +1,7 @@
 package com.dewire.dehub.view.login.view;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by kl on 04/11/16.
@@ -12,7 +13,7 @@ public interface LoginContract {
 
   Observable<CharSequence> passwordText();
 
-  Observable<Void> loginButtonClick();
+  Observable<Object> loginButtonClick();
 
   void enableLoginButton(Boolean enabled);
 

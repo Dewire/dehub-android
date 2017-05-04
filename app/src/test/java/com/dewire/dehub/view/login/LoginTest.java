@@ -19,8 +19,9 @@ import com.squareup.leakcanary.RefWatcher;
 import org.junit.Before;
 import org.junit.Test;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 public class LoginTest extends BaseTest {
 
@@ -56,7 +57,7 @@ public class LoginTest extends BaseTest {
 
   private GistApi makeMockApi() {
     GistApi api = mock(GistApi.class);
-    when(api.login(anyString(), anyString())).thenReturn(Observable.just(null));
+    when(api.login(anyString(), anyString())).thenReturn(Observable.just(""));
     return api;
   }
 
@@ -113,12 +114,12 @@ public class LoginTest extends BaseTest {
     when(view.usernameText()).thenReturn(Observable.just("username"));
     when(view.passwordText()).thenReturn(Observable.just("password"));
 
-    BehaviorSubject<Void> click = BehaviorSubject.create();
+    BehaviorSubject<Object> click = BehaviorSubject.create();
     when(view.loginButtonClick()).thenReturn(click);
 
     presenter.onSubscribe(null);
 
-    click.onNext(null);
+    click.onNext(Login.ISTANCE);
 
     verify(view).enableLoginButton(false);
   }
@@ -129,14 +130,14 @@ public class LoginTest extends BaseTest {
     when(view.usernameText()).thenReturn(Observable.just("username"));
     when(view.passwordText()).thenReturn(Observable.just("password"));
 
-    BehaviorSubject<Void> click = BehaviorSubject.create();
+    BehaviorSubject<Object> click = BehaviorSubject.create();
     when(view.loginButtonClick()).thenReturn(click);
 
     when(api.login(anyString(), anyString())).thenReturn(Observable.error(new Exception()));
 
     presenter.onSubscribe(null);
 
-    click.onNext(null);
+    click.onNext(Login.ISTANCE);
 
     verify(view, never()).starAppActivity();
     verify(view).enableLoginButton(false);
@@ -148,14 +149,18 @@ public class LoginTest extends BaseTest {
     when(view.usernameText()).thenReturn(Observable.just("username"));
     when(view.passwordText()).thenReturn(Observable.just("password"));
 
-    BehaviorSubject<Void> click = BehaviorSubject.create();
+    BehaviorSubject<Object> click = BehaviorSubject.create();
     when(view.loginButtonClick()).thenReturn(click);
 
     presenter.onSubscribe(null);
 
-    click.onNext(null);
+    click.onNext(Login.ISTANCE);
 
     verify(view).starAppActivity();
+  }
+
+  enum Login {
+    ISTANCE;
   }
 
 }

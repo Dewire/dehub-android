@@ -2,7 +2,10 @@ package com.dewire.dehub.view.creategist.view;
 
 import android.view.MenuItem;
 
-import rx.Observable;
+import com.jakewharton.rxbinding2.InitialValueObservable;
+
+import io.reactivex.Observable;
+
 
 /**
  * Created by kl on 04/11/16.
@@ -10,11 +13,11 @@ import rx.Observable;
 
 @SuppressWarnings("unused")
 public interface CreateGistContract {
-  Observable<CharSequence> titleText();
+  InitialValueObservable<CharSequence> titleText();
 
-  Observable<CharSequence> bodyText();
+  InitialValueObservable<CharSequence> bodyText();
 
-  Observable<Void> saveClick();
+  Observable<Object> saveClick();
 
   void enableSaveButton(Boolean enabled);
 

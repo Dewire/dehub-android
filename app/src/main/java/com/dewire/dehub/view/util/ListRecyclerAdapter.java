@@ -4,11 +4,12 @@ import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.dewire.dehub.util.Action2;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rx.functions.Action2;
 
 /**
  * Created by kl on 31/10/16.

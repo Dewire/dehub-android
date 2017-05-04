@@ -1,7 +1,8 @@
 package com.dewire.dehub.util;
 
-import rx.Observer;
-import rx.functions.Action0;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by kl on 19/10/16.
@@ -19,11 +20,16 @@ public class CompletionObserver implements Observer<Object> {
   }
 
   @Override
+  public void onSubscribe(@NonNull Disposable d) {
+
+  }
+
+  @Override
   public void onNext(Object object) {
   }
 
   @Override
-  public void onCompleted() {
+  public void onComplete() {
     callback.call();
   }
 

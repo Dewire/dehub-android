@@ -37,6 +37,10 @@ android {
         // see: https://github.com/square/okio/issues/58
         disable 'InvalidPackage'
     }
+    packagingOptions {
+        // Some Nucelus libraries uses rxjava 1.0.x, and that creates a conflict with rxjava2
+        exclude 'META-INF/rxjava.properties'
+    }
     applicationVariants.all { variant ->
         // If there is only one task (e.g. assembleDebug) we don't run our checks in order
         // not to slow down instant run. To run the checks click Run -> Clean and rerun.

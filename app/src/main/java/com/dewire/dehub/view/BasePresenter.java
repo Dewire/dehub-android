@@ -16,10 +16,11 @@ import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
 
+import io.reactivex.ObservableTransformer;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import nucleus.presenter.Presenter;
-import rx.Observable;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
 
 public abstract class BasePresenter<V> extends Presenter<V> {
 
@@ -32,7 +33,7 @@ public abstract class BasePresenter<V> extends Presenter<V> {
     return refWatcher;
   }
 
-  private final CompositeSubscription disposeBag = new CompositeSubscription();
+  private final CompositeDisposable disposeBag = new CompositeDisposable();
   private int activeSpinnerRequests = 0;
 
   /**
@@ -46,8 +47,8 @@ public abstract class BasePresenter<V> extends Presenter<V> {
   /**
    * Unsubscribes from the subscription in onDropView().
    */
-  protected void life(Subscription subscription) {
-    disposeBag.add(subscription);
+  protected void life(Disposable disposable) {
+    disposeBag.add(disposable);
   }
 
   @CallSuper
@@ -131,7 +132,7 @@ public abstract class BasePresenter<V> extends Presenter<V> {
    * Publishes and subscribes to the given observable doing the equivalent of
    * error(spin(observable)).
    */
-  protected <T> Observable.Transformer<T, T> spinError() {
+  protected <T> ObservableTransformer<T, T> spinError() {
     return observable -> {
       Observable<T> published = observable.publish().autoConnect(3);
       observeSpin(published);
@@ -145,7 +146,7 @@ public abstract class BasePresenter<V> extends Presenter<V> {
    * on the view and hideLoadingIndicator() when the observable finishes (completed or error).
    * @return the published observable
    */
-  protected <T> Observable.Transformer<T, T> spin() {
+  protected <T> ObservableTransformer<T, T> spin() {
     return observable -> {
       Observable<T> published = observable.publish().autoConnect(2);
       observeSpin(published);
@@ -158,7 +159,7 @@ public abstract class BasePresenter<V> extends Presenter<V> {
    * on the view if the given observable throws an error.
    * @return the published observable
    */
-  protected <T> Observable.Transformer<T, T> error() {
+  protected <T> ObservableTransformer<T, T> error() {
     return observable -> {
       Observable<T> published = observable.publish().autoConnect(2);
       observeError(published);

@@ -13,7 +13,7 @@ import com.dewire.dehub.view.login.view.LoginContract;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class LoginPresenter extends BasePresenter<LoginContract> {
 

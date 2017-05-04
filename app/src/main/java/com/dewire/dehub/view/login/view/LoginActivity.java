@@ -11,11 +11,12 @@ import com.dewire.dehub.R;
 import com.dewire.dehub.view.AppActivity;
 import com.dewire.dehub.view.BaseAppCompatActivity;
 import com.dewire.dehub.view.login.LoginPresenter;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.InitialValueObservable;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import io.reactivex.Observable;
 import nucleus.factory.RequiresPresenter;
-import rx.Observable;
 
 @RequiresPresenter(LoginPresenter.class)
 public class LoginActivity extends BaseAppCompatActivity<LoginPresenter>
@@ -31,12 +32,12 @@ public class LoginActivity extends BaseAppCompatActivity<LoginPresenter>
   }
 
   @Override
-  public Observable<CharSequence> passwordText() {
+  public InitialValueObservable<CharSequence> passwordText() {
     return RxTextView.textChanges(passwordTextView);
   }
 
   @Override
-  public Observable<Void> loginButtonClick() {
+  public Observable<Object> loginButtonClick() {
     return RxView.clicks(loginButton);
   }
 

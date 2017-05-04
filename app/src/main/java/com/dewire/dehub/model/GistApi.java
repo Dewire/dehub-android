@@ -10,15 +10,16 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.subjects.BehaviorSubject;
 
 public class GistApi {
 
@@ -30,13 +31,12 @@ public class GistApi {
     api = retrofit.create(RetrofitApi.class);
   }
 
-  public Observable<Void> login(String username, String password) {
+  public Observable<Object> login(String username, String password) {
     state.setBasicAuth(username, password);
-    return api.getGists().compose(network())
-        .map(v -> null);
+    return api.getGists().compose(network());
   }
 
-  public Observable<Void> loadGists() {
+  public Observable<Object> loadGists() {
     return connect(api.getGists(), state.gists);
   }
 
@@ -46,7 +46,7 @@ public class GistApi {
    * @param gistEntity the gist to create
    * @return an Observable that indicates the success or failure of the post.
    */
-  public Observable<Void> postGist(CreateGistEntity gistEntity) {
+  public Observable<Object> postGist(CreateGistEntity gistEntity) {
     return connectElement(api.postGist(gistEntity), state.gists, Orderings.GISTS);
   }
 
@@ -80,11 +80,11 @@ public class GistApi {
   // Helper methods
   //===----------------------------------------------------------------------===//
 
-  private <T> Observable<Void> connect(Observable<T> observable, BehaviorSubject<T> state) {
+  private <T> Observable<Object> connect(Observable<T> observable, BehaviorSubject<T> state) {
     return connectObservable(observable, state, data -> data);
   }
 
-  private <T> Observable<Void> connectElement(Observable<T> observable,
+  private <T> Observable<Object> connectElement(Observable<T> observable,
                                               BehaviorSubject<ImmutableList<T>> state,
                                               @Nullable Ordering<T> ordering) {
 
@@ -106,28 +106,32 @@ public class GistApi {
     });
   }
 
-  private <T, U> Observable<Void> connectObservable(Observable<T> observable,
+  private <T, U> Observable<Object> connectObservable(Observable<T> observable,
                                                     BehaviorSubject<U> state,
-                                                    Func1<T, U> dataToState) {
+                                                    Function<T, U> dataToState) {
 
-    BehaviorSubject<Void> statusSubject = BehaviorSubject.create();
+    BehaviorSubject<Object> statusSubject = BehaviorSubject.create();
 
     observable.compose(network()).subscribe(
         data -> {
-          state.onNext(dataToState.call(data));
-          statusSubject.onNext(null);
+          state.onNext(dataToState.apply(data));
+          statusSubject.onNext(Event.INSTANCE);
         },
         statusSubject::onError,
-        statusSubject::onCompleted);
+        statusSubject::onComplete);
 
     return statusSubject;
   }
 
   // A helper method to configure common options that should apply for all network
   // request observables.
-  private <T> Observable.Transformer<T, T> network() {
+  private <T> ObservableTransformer<T, T> network() {
     return observable -> observable.observeOn(AndroidSchedulers.mainThread())
         .doOnError(e -> Log.e("GistApi", Throwables.getStackTraceAsString(e)));
+  }
+
+  enum Event {
+    INSTANCE;
   }
 }
 

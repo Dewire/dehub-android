@@ -4,9 +4,10 @@ import com.dewire.dehub.view.BasePresenter;
 
 import java.lang.ref.WeakReference;
 
-import rx.Observer;
-import rx.functions.Action0;
-import rx.functions.Action1;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * Created by kl on 21/10/16.
@@ -70,7 +71,12 @@ public class LifeObserver<T> implements Observer<T> {
   }
 
   @Override
-  public void onCompleted() {
+  public void onSubscribe(@NonNull Disposable d) {
+
+  }
+
+  @Override
+  public void onComplete() {
     BasePresenter<?> presenter = presenterWeakRef.get();
     if (presenter == null) {
       return;
